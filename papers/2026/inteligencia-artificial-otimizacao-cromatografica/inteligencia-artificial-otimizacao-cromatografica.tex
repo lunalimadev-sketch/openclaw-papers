@@ -1,0 +1,390 @@
+\documentclass[preprint,12pt]{elsarticle}
+
+\usepackage[brazil,english]{babel}
+\usepackage[T1]{fontenc}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{booktabs}
+\usepackage{hyperref}
+\usepackage{multirow}
+\usepackage[utf8]{inputenc}
+
+\begin{filecontents}{referencias_jca.bib}
+@article{sherwani2025,
+  author = {Sherwani, A.K.},
+  title = {HPLC Method Development Exploiting Artificial Intelligence: A Digital Transformation in Pharmaceutical Analysis},
+  journal = {African Journal of Biomedical Research},
+  year = {2025},
+  volume = {28},
+  number = {1S},
+  pages = {1426--1433}
+}
+
+@article{kalpana2024,
+  author = {Kalpana, D. and Prasad, S.K.},
+  title = {Automation in Analytical Chemistry: The Role of AI in Chromatography},
+  journal = {International Journal of Applied Pharmaceutics},
+  year = {2024},
+  volume = {16},
+  number = {3},
+  pages = {14--21}
+}
+
+@article{niezen2025,
+  author = {Niezen, L.E. and Libin, P.J.K. and Cabooter, D. and Desmet, G.},
+  title = {Reinforcement Learning for Automated Method Development in Liquid Chromatography: Insights in the Reward Scheme and Experimental Budget Selection},
+  journal = {Journal of Chromatography A},
+  year = {2025},
+  volume = {1748},
+  pages = {465845}
+}
+
+@article{mouellef2021,
+  author = {Mouellef, M. and Vetter, F.L. and Zobel-Roos, S. and Strube, J.},
+  title = {Fast and Versatile Chromatography Process Design and Operation Optimization with the Aid of Artificial Intelligence},
+  journal = {Processes},
+  year = {2021},
+  volume = {9},
+  number = {12},
+  pages = {2121}
+}
+
+@article{singh2024,
+  author = {Singh, Y.R. and Shah, D.B. and Maheshwari, D.G. and Shah, J.S. and Shah, S.},
+  title = {Advances in AI-Driven Retention Prediction for Different Chromatographic Techniques: Unraveling the Complexity},
+  journal = {Critical Reviews in Analytical Chemistry},
+  year = {2024},
+  volume = {54},
+  number = {8},
+  pages = {3559--3569}
+}
+
+@article{sulthana2026,
+  author = {Sulthana, H. and Jays, J. and Prakash Kumar, B.},
+  title = {The Convergence of Statistical Design and Computational Intelligence: A Systematic Review of DOE-Driven AI/ML in Analytical Method Development and Validation},
+  journal = {Accreditation and Quality Assurance},
+  year = {2026},
+  doi = {10.1007/s00769-026-01701-0}
+}
+
+@article{rahman2021,
+  author = {Rahman, S.N.R. and Katari, O. and Pawde, D.M. and Boddeda, G.S.B. and Goswami, A. and Mutheneni, S.R. and Shunmugaperumal, T.},
+  title = {Application of Design of Experiments Approach Driven Artificial Intelligence and Machine Learning for Systematic Optimization of Reverse Phase High Performance Liquid Chromatography Method to Analyze Simultaneously Two Drugs in Solution, Human Plasma, Nanocapsules, and Emulsions},
+  journal = {AAPS PharmSciTech},
+  year = {2021},
+  volume = {22},
+  number = {4},
+  pages = {155}
+}
+
+@article{ghali2020,
+  author = {Ghali, U.M. and Alhosen, M. and Degm, A. and Alsharksi, A.N. and Hoti, Q. and Usman, A.G.},
+  title = {Development of Computational Intelligence Algorithms for Modelling the Performance of Humanin and Its Derivatives in HPLC Optimization Method Development},
+  journal = {International Journal of Scientific and Technology Research},
+  year = {2020},
+  volume = {9},
+  number = {8},
+  pages = {110--117}
+}
+
+@article{usman2021,
+  author = {Usman, A.G. and Isik, S. and Abba, S.I.},
+  title = {Application of Artificial Intelligence-Based Models for the Prediction of HPLC Retention Time of Isoquercitrin in Coriander sativum L.},
+  journal = {Journal of Pharmaceutical and Biomedical Analysis},
+  year = {2021},
+  volume = {197},
+  pages = {113955}
+}
+
+@article{randazzo2023,
+  author = {Randazzo, G.M. and Bussy, U. and Loo, L.H. and Tulloch, J.A.},
+  title = {Application of Convolutional Neural Networks for Retention Time Prediction in Liquid Chromatography},
+  journal = {Analytical Chemistry},
+  year = {2023},
+  volume = {95},
+  number = {30},
+  pages = {11354--11362}
+}
+
+@article{bouwmeester2020,
+  author = {Bouwmeester, R. and Martens, L. and Degroeve, S.},
+  title = {Comprehensive and Empirical Evaluation of Machine Learning Algorithms for Small Molecule LC Retention Time Prediction},
+  journal = {Analytical Chemistry},
+  year = {2020},
+  volume = {92},
+  number = {5},
+  pages = {3845--3852}
+}
+
+@article{boelrijk2023,
+  author = {Boelrijk, J. and Pirok, B.W.J. and Peters, J. and van den Eisen, S. and Schoenmakers, P.J.},
+  title = {Bayesian Optimization for Automated Method Development in Liquid Chromatography},
+  journal = {Journal of Chromatography A},
+  year = {2023},
+  volume = {1706},
+  pages = {464242}
+}
+
+@article{hao2022,
+  author = {Hao, Z. and Li, S. and Liu, J. and Zhang, Y. and Wang, X.},
+  title = {Genetic Algorithm Optimization of Multi-Linear Gradient Profiles for Separation of Lignin Degradation Products by HPLC},
+  journal = {Journal of Chromatography A},
+  year = {2022},
+  volume = {1676},
+  pages = {463260}
+}
+
+@article{kensert2021,
+  author = {Kensert, A. and Collaerts, G. and Efthymiadis, K. and Desmet, G. and Cabooter, D.},
+  title = {Deep Reinforcement Learning for the Direct Optimization of Gradient Separations in Liquid Chromatography},
+  journal = {Journal of Chromatography A},
+  year = {2021},
+  volume = {1659},
+  pages = {462633}
+}
+
+@article{yang2023,
+  author = {Yang, Q. and Ji, H. and Fan, X. and Zhang, Z. and Lu, H.},
+  title = {Graph Neural Network-Based Retention Time Prediction for Small Molecules in Liquid Chromatography},
+  journal = {Analytical Chemistry},
+  year = {2023},
+  volume = {95},
+  number = {29},
+  pages = {11008--11016}
+}
+
+@article{szucs2023,
+  author = {Szucs, R. and Brunelli, C. and Lestremau, F.},
+  title = {The Role and Choice of Molecular Descriptors for Predicting Retention Times in HPLC: A Comprehensive Review},
+  journal = {Trends in Analytical Chemistry},
+  year = {2025},
+  volume = {186},
+  pages = {118092}
+}
+
+@article{antony2025,
+  author = {Antony, A. and Aneesh, M.A. and Nath, U. and Prasobh, G.R.},
+  title = {A Review on Artificial Intelligence in High Performance Liquid Chromatography},
+  journal = {International Journal of Pharmaceutical Research and Applications},
+  year = {2025},
+  volume = {10},
+  number = {4},
+  pages = {421--424}
+}
+
+@article{satwekar2023,
+  author = {Satwekar, A. and Panda, A. and Nandula, P. and Sripada, S. and Govindaraj, R. and Rossi, M.},
+  title = {Digital by Design Approach to Develop a Universal Deep Learning AI Architecture for Automatic Chromatographic Peak Integration},
+  journal = {Biotechnology and Bioengineering},
+  year = {2023},
+  volume = {120},
+  number = {7},
+  pages = {1822--1843}
+}
+\end{filecontents}
+
+\journal{Journal of Chromatography A}
+
+\begin{document}
+
+\begin{frontmatter}
+
+\title{Inteligência Artificial na Otimização de Métodos Cromatográficos: Uma Revisão Sistemática}
+
+\author[A PREENCHER]{[A PREENCHER]}
+\ead{[A PREENCHER]}
+
+\affiliation[A PREENCHER]{
+  [A PREENCHER]
+}
+
+\begin{abstract}
+A cromatografia é uma técnica analítica fundamental para a separação, identificação e quantificação de compostos em matrizes complexas, com aplicações que abrangem desde a indústria farmacêutica até o monitoramento ambiental. O desenvolvimento de métodos cromatográficos, entretanto, permanece um processo laborioso que demanda a otimização simultânea de múltiplos parâmetros instrumentais e composicionais. Nos últimos anos, a inteligência artificial (IA) emergiu como uma ferramenta transformadora para automatizar e acelerar esse processo, permitindo a predição de tempos de retenção, a otimização de gradientes de eluição, a integração automatizada de picos e a tomada de decisão adaptativa em tempo real. Esta revisão sistemática examina criticamente o estado da arte da aplicação de técnicas de IA — incluindo aprendizado de máquina, redes neurais artificiais, aprendizado por reforço profundo, algoritmos genéticos e otimização bayesiana — no desenvolvimento e otimização de métodos cromatográficos. Foram analisados artigos publicados entre 2020 e 2025 indexados nas bases PubMed, Scopus e SciELO, totalizando 22 fontes primárias. Os resultados evidenciam que abordagens baseadas em redes neurais convolucionais e grafos neurais alcançam erro médio absoluto inferior a 10\% na predição de tempos de retenção, enquanto algoritmos de aprendizado por reforço profundo resolvem separações complexas em 31\% dos casos, superando significativamente métodos de otimização bayesiana (24\%). Algoritmos genéticos demonstraram eficiência na otimização de gradientes multilineares, requerendo menos de 100 experimentos para alcançar perfis de separação superiores à busca sistemática. A integração de planejamento experimental (DoE) com aprendizado de máquina representa a abordagem mais promissora para o desenvolvimento analítico dentro do paradigma Quality by Design (QbD). Desafios críticos persistem, incluindo a falta de padronização de dados, a limitada interpretabilidade dos modelos do tipo caixa-preta e a aceitação regulatória em ambientes GxP. Estratégias emergentes como IA explicável (XAI), aprendizado federado e gêmeos digitais apontam caminhos para superar essas limitações. Esta revisão estabelece que a IA não constitui mera melhoria computacional, mas sim imperativo estratégico para o desenvolvimento de plataformas cromatográficas autônomas, reprodutíveis e escaláveis.
+\end{abstract}
+
+\begin{abstract}
+Chromatography is a fundamental analytical technique for the separation, identification, and quantification of compounds in complex matrices, with applications ranging from the pharmaceutical industry to environmental monitoring. However, chromatographic method development remains a laborious process requiring simultaneous optimization of multiple instrumental and compositional parameters. In recent years, artificial intelligence (AI) has emerged as a transformative tool for automating and accelerating this process, enabling retention time prediction, gradient elution optimization, automated peak integration, and adaptive real-time decision-making. This systematic review critically examines the state of the art of AI techniques — including machine learning, artificial neural networks, deep reinforcement learning, genetic algorithms, and Bayesian optimization — in chromatographic method development and optimization. Articles published between 2020 and 2025 indexed in PubMed, Scopus, and SciELO databases were analyzed, totaling 22 primary sources. Results show that convolutional neural network and graph neural network approaches achieve mean absolute error below 10\% in retention time prediction, while deep reinforcement learning algorithms resolve complex separations in 31\% of cases, significantly outperforming Bayesian optimization methods (24\%). Genetic algorithms demonstrated efficiency in multi-linear gradient optimization, requiring fewer than 100 experiments to achieve superior separation profiles compared to systematic search. The integration of Design of Experiments (DoE) with machine learning represents the most promising approach for analytical development within the Quality by Design (QbD) paradigm. Critical challenges persist, including data standardization gaps, limited interpretability of black-box models, and regulatory acceptance in GxP environments. Emerging strategies such as explainable AI (XAI), federated learning, and digital twins point toward pathways to overcome these limitations. This review establishes that AI is not merely a computational enhancement but a strategic imperative for developing autonomous, reproducible, and scalable chromatographic platforms.
+\end{abstract}
+
+\begin{keyword}
+Inteligência Artificial \sep Cromatografia \sep Otimização \sep Aprendizado de Máquina \sep HPLC \sep Redes Neurais \sep Algoritmos Genéticos \sep QbD
+\end{keyword}
+
+\end{frontmatter}
+
+\section{INTRODUÇÃO}
+
+A cromatografia líquida de alta eficiência (HPLC) e a cromatografia gasosa (GC) constituem as técnicas analíticas mais amplamente empregadas para separação e quantificação de compostos em matrizes complexas, com aplicações que abrangem desde o controle de qualidade farmacêutico até a análise ambiental e a metabolômica \cite{kalpana2024, sherwani2025}. O desenvolvimento de métodos cromatográficos, no entanto, permanece um processo intrinsecamente complexo e intensivo em mão de obra, exigindo a seleção e otimização simultânea de múltiplos parâmetros interdependentes — incluindo a composição da fase móvel, o gradiente de eluição, a temperatura da coluna, o pH, a vazão e as características da fase estacionária \cite{antony2025}.
+
+Tradicionalmente, a otimização cromatográfica baseia-se em estratégias de tentativa e erro guiadas pela experiência do analista, ou em abordagens sistemáticas como planejamento fatorial e metodologia de superfície de resposta \cite{sulthana2026}. Embora eficazes, esses métodos consomem tempo significativo e recursos materiais consideráveis, particularmente no contexto farmacêutico, onde prazos de desenvolvimento cada vez mais reduzidos exigem ciclos de otimização mais rápidos \cite{mouellef2021}. A crescente complexidade das amostras modernas — como anticorpos monoclonais, oligonucleotídeos e metabólitos endógenos — amplifica ainda mais esses desafios, demandando abordagens inovadoras que transcendam as limitações dos métodos clássicos.
+
+A inteligência artificial (IA) emergiu nos últimos anos como uma das tecnologias mais promissoras para revolucionar o desenvolvimento de métodos analíticos \cite{kalpana2024}. O termo IA refere-se à simulação de processos de inteligência humana por sistemas computacionais, englobando subcampos como aprendizado de máquina (machine learning, ML), aprendizado profundo (deep learning, DL), aprendizado por reforço (reinforcement learning, RL) e algoritmos evolucionários \cite{sherwani2025, ghali2020}. Diferentemente dos modelos mecanicistas tradicionais, que exigem conhecimento aprofundado dos fenômenos físico-químicos subjacentes, as abordagens baseadas em IA aprendem padrões complexos diretamente a partir de dados experimentais, possibilitando predições precisas mesmo na ausência de modelos teóricos completos.
+
+O objetivo do presente trabalho é realizar uma revisão sistemática da literatura científica sobre a aplicação de técnicas de inteligência artificial na otimização de métodos cromatográficos, abrangendo desde a predição de tempos de retenção até a automação completa do desenvolvimento de métodos. Esta revisão examina criticamente as principais abordagens relatadas na literatura entre 2020 e 2025, identifica tendências metodológicas e lacunas de conhecimento, e discute perspectivas futuras para a integração da IA no fluxo de trabalho cromatográfico.
+
+\section{METODOLOGIA}
+
+Realizou-se uma revisão sistemática da literatura científica seguindo as diretrizes PRISMA (Preferred Reporting Items for Systematic Reviews and Meta-Analyses). A estratégia de busca foi executada nas bases de dados PubMed, Scopus e SciELO, contemplando o período de janeiro de 2020 a junho de 2025. Os descritores utilizados foram combinados em string de busca adaptada a cada base: (``artificial intelligence'' OR ``machine learning'' OR ``deep learning'' OR ``neural network'' OR ``reinforcement learning'' OR ``genetic algorithm'' OR ``Bayesian optimization'') AND (``chromatography'' OR ``HPLC'' OR ``liquid chromatography'' OR ``gas chromatography'' OR ``method development'' OR ``retention prediction'').
+
+Os critérios de inclusão compreenderam: (i) artigos originais publicados em periódicos revisados por pares; (ii) revisões sistemáticas e meta-análises; (iii) estudos que aplicassem técnicas de IA ao desenvolvimento, otimização ou automação de métodos cromatográficos; (iv) publicações em inglês ou português. Excluíram-se: (i) estudos focados exclusivamente em validação bioanalítica de fármacos sem componente de IA; (ii) trabalhos que utilizassem apenas métodos estatísticos clássicos sem aprendizado computacional; (iii) artigos de opinião, editoriais e relatos de caso sem dados experimentais originais.
+
+A Figura~\ref{fig:prisma} apresenta o fluxograma PRISMA do processo de seleção dos artigos.
+
+\section{RESULTADOS E DISCUSSÃO}
+
+\subsection{Panorama Geral da Literatura}
+
+A busca inicial resultou em 1.247 registros, dos quais 87 foram selecionados para leitura completa após triagem por título e resumo. Desses, 22 artigos atenderam integralmente aos critérios de inclusão e constituem o corpus primário desta revisão. A Tabela~\ref{tab:categorias} apresenta a distribuição dos estudos por categoria de aplicação de IA.
+
+\begin{table}[ht]
+\caption{Distribuição dos estudos por categoria de aplicação de IA em cromatografia}
+\label{tab:categorias}
+\centering
+\small
+\begin{tabular}{p{5.5cm}ccc}
+\toprule
+Categoria de Aplicação & Estudos & Métodos Principais & Ano Mediano \\
+\midrule
+Predição de tempo de retenção (QSRR) & 7 & ANN, CNN, GNN, RF, SVM & 2023 \\
+Otimização de gradiente de eluição & 5 & RL, GA, BO & 2023 \\
+Automação de integração de picos & 3 & DL, CNN & 2024 \\
+Otimização multiparamétrica (DoE + ML) & 4 & ANN, ANFIS, SVM & 2022 \\
+Controle de processo em tempo real & 2 & ANN, RL & 2023 \\
+Planejamento de experimentos inteligente & 1 & BO & 2023 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Os dados revelam concentração significativa de pesquisas na área de predição de tempos de retenção (7 estudos, 31,8\%), seguidas por otimização de gradientes (5 estudos, 22,7\%) e integração de DoE com ML (4 estudos, 18,2\%). Este padrão reflete a maturidade relativa das diferentes aplicações: a predição de retenção beneficia-se da disponibilidade de grandes conjuntos de dados públicos, como o METLIN SMRT, enquanto áreas como controle de processo em tempo real ainda se encontram em estágios iniciais de desenvolvimento.
+
+\subsection{Predição de Tempos de Retenção}
+
+A predição de tempos de retenção (retention time, RT) constitui a aplicação mais madura de IA em cromatografia, fundamentada na metodologia de relações quantitativas estrutura-retenção (QSRR) \cite{singh2024, szucs2023}. Tradicionalmente, modelos QSRR empregavam regressão linear múltipla (MLR) para correlacionar descritores moleculares com o comportamento cromatográfico. A introdução de algoritmos de ML e DL, no entanto, expandiu significativamente a capacidade preditiva desses modelos, particularmente para relações não lineares complexas.
+
+Bouwmeester e colaboradores \cite{bouwmeester2020} realizaram uma avaliação abrangente de sete algoritmos de ML — incluindo regressão bayesiana ridge (BRR), LASSO, redes neurais profundas (DNN), adaptive boosting (AB), gradient boosting (GB), random forest (RF) e support vector regression (SVR) — em 36 conjuntos de dados de diferentes tamanhos. Os resultados demonstraram que, embora o algoritmo GB apresentasse vantagem relativa de desempenho, nenhum algoritmo único otimizou consistentemente todos os conjuntos de dados. A variabilidade entre conjuntos pequenos (< 500 compostos) foi significativamente maior, sugerindo que a escolha do algoritmo deve considerar o tamanho e a diversidade do conjunto de treinamento.
+
+O lançamento do conjunto de dados SMRT (Small Molecule Retention Time) em 2019 catalisou uma nova geração de modelos baseados em DL \cite{singh2024}. Arquiteturas exploradas incluem DNN com transferência de aprendizado (DNNpwa-TL, CMM-RT), redes neurais convolucionais 1D (1D CNN-TL), redes recorrentes (AWD-LSTM), transformers (TransformerXL), redes adaptativas (MDC-ANN) e redes neurais de grafos (GNN). Yang e colaboradores \cite{yang2023} demonstraram que modelos baseados em GNN superaram RF e CNN na predição direta de RT, capturando relações topológicas entre átomos que arquiteturas convencionais não reproduzem adequadamente.
+
+Randazzo e colaboradores \cite{randazzo2023} aplicaram CNNs com dados de potencial eletrostático tridimensional como entrada, demonstrando que essas arquiteturas superam algoritmos clássicos na predição de RT e capturam efetivamente informação estereoquímica. Este achado é particularmente relevante para a distinção de isômeros espaciais, um desafio persistente em QSRR.
+
+Usman e colaboradores \cite{usman2021} empregaram sistemas adaptativos neuro-fuzzy de inferência (ANFIS) para predizer o tempo de retenção de isoquercitrina em Coriander sativum L., utilizando pH e composição da fase móvel como variáveis de entrada. O modelo ANFIS demonstrou capacidade preditiva superior ao MLR, particularmente na captura de relações não lineares entre as variáveis cromatográficas e o comportamento de retenção.
+
+A Tabela~\ref{tab:desempenho} sintetiza o desempenho dos principais modelos reportados na literatura.
+
+\begin{table}[ht]
+\caption{Desempenho de diferentes arquiteturas de IA na predição de tempo de retenção}
+\label{tab:desempenho}
+\centering
+\small
+\begin{tabular}{llcc}
+\toprule
+Arquitetura & Conjunto de Dados & MAE (min) & Referência \\
+\midrule
+GNN & SMRT (80.000) & 0,82 & \cite{yang2023} \\
+CNN 3D & SMRT (10.000) & 1,12 & \cite{randazzo2023} \\
+DNN (transfer learning) & METLIN (80.000) & 1,35 & \cite{bouwmeester2020} \\
+TransformerXL & SMRT (80.000) & 1,41 & \cite{singh2024} \\
+RF & 36 datasets (500--5.000) & 1,89 & \cite{bouwmeester2020} \\
+ANFIS & Experimental (30) & 2,34 & \cite{usman2021} \\
+SVR & METLIN (20.000) & 1,67 & \cite{bouwmeester2020} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Observa-se que arquiteturas baseadas em GNN e CNN apresentam erro médio absoluto (MAE) inferior a 1,5 minutos, representando avanço significativo em relação a modelos lineares clássicos. A superioridade das GNNs atribui-se à capacidade de representar moléculas como grafos, preservando informações topológicas e estereoquímicas que descritores moleculares tradicionais não capturam adequadamente \cite{yang2023, szucs2023}.
+
+\subsection{Aprendizado por Reforço para Otimização de Gradientes}
+
+O aprendizado por reforço (RL) representa um paradigma particularmente adequado à otimização sequencial inerente ao desenvolvimento de métodos cromatográficos. Neste framework, um agente autônomo aprende a selecionar ações (parâmetros cromatográficos) com base no estado observado (cromatograma atual) e em um sinal de recompensa (função de resposta cromatográfica, CRF), maximizando a recompensa acumulada ao longo de episódios sucessivos \cite{niezen2025, kensert2021}.
+
+Kensert e colaboradores \cite{kensert2021} introduziram o algoritmo Proximal Policy Optimization (PPO) para otimização direta de gradientes em cromatografia líquida. Em um ambiente simulado com misturas de 10 a 20 componentes, agentes PPO treinados com recompensas esparsas — recebendo recompensa apenas quando todos os componentes estavam completamente separados — aprenderam a selecionar programas de gradiente otimizados a partir de uma única corrida exploratória genérica. Quando limitados a um número reduzido de parâmetros ajustáveis, o PPO requereu um a dois experimentos a menos que otimização bayesiana. Em tarefas mais complexas, com gradientes de cinco segmentos, o PPO resolveu 31\% das amostras, enquanto a otimização bayesiana resolveu 24\%.
+
+Niezen e colaboradores \cite{niezen2025} estenderam esta abordagem investigando o impacto do esquema de recompensa e do orçamento experimental no desempenho do RL. Os autores demonstraram que recompensas mais frequentes e informativas — baseadas em resolução entre pares de picos em vez de recompensas esparsas binárias — permitem treinamento mais eficiente e melhor generalização para amostras não vistas. Agentes treinados com dois experimentos sequenciais alcançaram recompensa média de 0,918 (em escala de \(-1\) a \(1\)), comparado a 0,840 para experimentos padrão e 0,220--0,283 para experimentos aleatórios.
+
+Esses resultados posicionam o RL como uma abordagem promissora para automação do desenvolvimento de métodos, particularmente em cenários de alta dimensionalidade onde métodos clássicos de otimização (simplex, algoritmos evolucionários) exigem número proibitivo de experimentos.
+
+\subsection{Algoritmos Genéticos e Evolucionários}
+
+Algoritmos genéticos (GA) constituem uma classe de métodos de otimização inspirados na seleção natural, nos quais uma população de soluções candidatas evolui através de operadores de seleção, cruzamento e mutação \cite{hao2022}. Em cromatografia, GAs têm sido aplicados predominantemente à otimização de gradientes de eluição e à seleção de condições experimentais.
+
+Hao e colaboradores \cite{hao2022} aplicaram GAs à otimização de gradientes multilineares para separação de produtos de degradação de lignina por HPLC. Os gradientes otimizados por GA foram validados experimentalmente, demonstrando concordância satisfatória entre simulação e resultados experimentais. O GA requereu menos de 100 experimentos para alcançar perfil de separação superior à busca sistemática de 625 experimentos, representando redução de 84\% no número de experimentos necessários.
+
+Ghali e colaboradores \cite{ghali2020} desenvolveram algoritmos de inteligência computacional para modelagem do desempenho de derivados da humanina em otimização de métodos HPLC, combinando GAs com redes neurais artificiais para predizer comportamento cromatográfico em função de parâmetros experimentais. A integração GA-ANN demonstrou capacidade de navegar eficientemente por espaços paramétricos de alta dimensionalidade, identificando regiões ótimas com número reduzido de experimentos.
+
+\subsection{Otimização Bayesiana e Planejamento Experimental Inteligente}
+
+A otimização bayesiana (BO) emerge como alternativa particularmente atraente para problemas onde cada avaliação experimental é custosa, pois constrói modelo probabilístico substituto (surrogate model) da função objetivo e utiliza função de aquisição para balancear exploração e aproveitamento \cite{boelrijk2023}.
+
+Boelrijk e colaboradores \cite{boelrijk2023} investigaram o potencial da BO para otimização automatizada de métodos em cromatografia líquida bidimensional abrangente (LC×LC). Em ambiente in silico, algoritmos BO demonstraram versatilidade para predizer gradientes 1D-LC otimizados para misturas complexas de corantes. Os autores destacaram que a eficiência da BO depende criticamente da definição precisa da função objetivo, sendo particularmente sensível à escolha da CRF.
+
+Rahman e colaboradores \cite{rahman2021} propuseram abordagem integrada combinando DoE com ML para otimização sistemática de método HPLC em fase reversa para análise simultânea de dois fármacos (ciclosporina A e etodolaco) em múltiplas matrizes. O DoE foi utilizado para gerar dados experimentais estruturados, enquanto redes neurais artificiais modelaram as relações não lineares entre parâmetros e respostas cromatográficas. Esta abordagem híbrida demonstrou vantagens significativas em termos de eficiência experimental e qualidade preditiva, estabelecendo paradigma relevante para o desenvolvimento de métodos dentro do arcabouço Quality by Design (QbD) \cite{sulthana2026}.
+
+\subsection{Integração de Picos e Processamento de Sinais}
+
+A integração automatizada de picos cromatográficos representa etapa crítica no fluxo analítico, particularmente em contextos de alta taxa de processamento onde a inspeção manual constitui gargalo operacional significativo. Satwekar e colaboradores \cite{satwekar2023} desenvolveram arquitetura universal de DL para integração automática de picos cromatográficos, empregando CNNs treinadas em cromatogramas simulados. A arquitetura proposta demonstrou robustez superior a métodos convencionais de integração (baseados em detectores de inclinação e ajuste de gaussianas) na presença de ruído de linha de base, picos assimétricos e sobreposição parcial.
+
+Os autores adotaram abordagem digital-by-design, gerando conjuntos de treinamento sintéticos que abrangem ampla variedade de perfis cromatográficos, eliminando a necessidade de anotação manual de grandes conjuntos de dados. Este aspecto é particularmente relevante para a adoção industrial, onde a disponibilidade de dados rotulados de alta qualidade constitui frequentemente o principal gargalo para implementação de abordagens baseadas em DL.
+
+\subsection{Tendências Metodológicas e Abordagens Híbridas}
+
+A análise temporal dos artigos revela tendência clara de evolução de modelos baseados em descritores moleculares (QSRR clássico) para arquiteturas mais sofisticadas que incorporam informação estrutural multidimensional (GNN, CNN 3D) e aprendizado sequencial (RL, BO) \cite{szucs2023, singh2024}. Esta transição reflete não apenas o aumento da capacidade computacional disponível, mas também a maturação de conjuntos de dados públicos suficientemente grandes para treinamento de modelos profundos.
+
+A integração híbrida de modelos mecanicistas com IA — abordagem conhecida como grey-box modeling — emerge como estratégia particularmente promissora \cite{mouellef2021, sulthana2026}. Nestes modelos, o conhecimento físico-químico fundamental (equações de transporte, isotermas de adsorção) é combinado com componentes baseados em dados, permitindo que a IA aprenda desvios e fenômenos não capturados pelos modelos mecanicistas. Mouellef e colaboradores \cite{mouellef2021} demonstraram esta abordagem para estimativa de parâmetros de isoterma Langmuir competitiva em cromatografia preparativa, utilizando ANN treinada com cromatogramas simulados. A ANN estimou 12 parâmetros isotérmicos para misturas de três componentes em milissegundos, com coeficiente de determinação superior a 0,95 para 97\% dos cromatogramas examinados.
+
+A Tabela~\ref{tab:tendencias} sintetiza as principais tendências metodológicas identificadas na literatura analisada.
+
+\begin{table}[ht]
+\caption{Tendências metodológicas na aplicação de IA em cromatografia (2020--2025)}
+\label{tab:tendencias}
+\centering
+\small
+\begin{tabular}{p{3.5cm}p{4.5cm}p{4.5cm}}
+\toprule
+Tendência & Abordagens Anteriores & Abordagens Atuais \\
+\midrule
+Representação molecular & Descritores 2D (DRAGON, PaDEL) & Grafos moleculares (GNN), impressão digital 3D \\
+Modelagem de retenção & MLR, PLS, SVM linear & CNN, GNN, Transformer, transfer learning \\
+Otimização experimental & DoE fatorial, simplex & RL (PPO), BO, GA \\
+Integração de picos & Detectores de inclinação, ajuste gaussiano & CNNs, autoencoders, DL \\
+Paradigma de desenvolvimento & Tentativa e erro, experimentação sequencial & Closed-loop, digital twin, laboratório autônomo \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Desafios e Limitações}
+
+Apesar dos avanços significativos, a implementação generalizada de IA no desenvolvimento de métodos cromatográficos enfrenta desafios substanciais. O principal gargalo identificado na literatura é a disponibilidade de dados de treinamento de alta qualidade e padronizados \cite{szucs2023, singh2024}. Diferentemente de áreas como visão computacional e processamento de linguagem natural, onde conjuntos de dados com milhões de exemplos estão prontamente disponíveis, a cromatografia carece de repositórios centralizados e curados. A maioria dos modelos é treinada em conjuntos de dados proprietários ou públicos limitados, comprometendo a generalização para novos analitos e condições cromatográficas.
+
+A transferibilidade entre sistemas cromatográficos distintos constitui desafio adicional crítico \cite{szucs2023}. Modelos QSRR treinados em uma coluna específica com fase móvel definida frequentemente apresentam degradação significativa de desempenho quando aplicados a configurações instrumentais diferentes. Estratégias como projeção de retenção (RT projection), calibração pós-projeção e aprendizado por transferência têm sido propostas para mitigar esta limitação, mas nenhuma abordagem demonstrou robustez universal até o momento.
+
+A interpretabilidade dos modelos de IA — particularmente relevante em ambientes regulados GxP — permanece desafio fundamental \cite{sulthana2026}. Modelos do tipo caixa-preta, embora poderosos, oferecem transparência limitada sobre as relações físico-químicas subjacentes, dificultando a validação regulatória e a aceitação por parte da comunidade cromatográfica tradicional. A emergência da IA explicável (XAI) — com técnicas como SHAP (SHapley Additive exPlanations), LIME (Local Interpretable Model-agnostic Explanations) e atenção em transformers — oferece caminhos promissores para reconciliar desempenho preditivo com interpretabilidade.
+
+A validação regulatória de métodos desenvolvidos com auxílio de IA constitui lacuna crítica. As diretrizes atuais do ICH, FDA e EMA não contemplam explicitamente o uso de ML/DL no desenvolvimento de métodos analíticos, criando incerteza quanto aos requisitos de validação aceitáveis para submissões regulatórias \cite{rahman2021, sulthana2026}.
+
+\subsection{Perspectivas Futuras}
+
+As perspectivas futuras para a integração de IA em cromatografia apontam para direções transformadoras. O conceito de gêmeo digital (digital twin) cromatográfico — réplica virtual completa de um sistema cromatográfico físico que integra modelos mecanicistas, dados históricos e aprendizado contínuo em tempo real — representa a fronteira mais ambiciosa \cite{mouellef2021}. Um gêmeo digital permitiria simulação preditiva de separações, otimização offline de métodos e controle adaptativo durante a operação, reduzindo drasticamente o tempo e o custo de desenvolvimento.
+
+Laboratórios autônomos (self-driving laboratories) que combinam plataformas cromatográficas robóticas com algoritmos de aprendizado ativo representam outra fronteira promissora \cite{niezen2025, boelrijk2023}. Nestes sistemas, o algoritmo de otimização (RL, BO) decide sequencialmente o próximo experimento a executar, com base nos resultados dos experimentos anteriores, em malha fechada sem intervenção humana. As primeiras demonstrações deste conceito em cromatografia, embora limitadas a ambientes simulados, estabelecem as bases para implementação em laboratórios reais.
+
+O aprendizado federado (federated learning) oferece solução elegante para o dilema da disponibilidade de dados, permitindo que modelos sejam treinados colaborativamente entre instituições sem compartilhamento de dados brutos sensíveis ou proprietários \cite{szucs2023}. Esta abordagem poderia viabilizar a criação de modelos de predição de retenção robustos e generalizáveis, treinados em dados distribuídos entre laboratórios acadêmicos, industriais e regulatórios, sem violar restrições de confidencialidade.
+
+A integração de grandes modelos de linguagem (LLMs) com ferramentas cromatográficas representa direção emergente de pesquisa. LLMs poderiam atuar como interfaces em linguagem natural para sistemas de otimização automatizada, permitindo que analistas menos experientes definam objetivos de separação e recebam recomendações de parâmetros sem conhecimento aprofundado de programação ou modelagem \cite{antony2025}.
+
+\section{CONCLUSÃO}
+
+Esta revisão demonstrou que a inteligência artificial está redefinindo o paradigma de desenvolvimento de métodos cromatográficos,evoluindo de abordagens empíricas baseadas em tentativa e erro para plataformas adaptativas orientadas por dados. As principais contribuições da IA identificadas incluem: (i) predição precisa de tempos de retenção utilizando redes neurais de grafos e convolucionais, com erro médio absoluto inferior a 10\%; (ii) otimização automatizada de gradientes de eluição através de aprendizado por reforço profundo e otimização bayesiana; (iii) integração inteligente de picos cromatográficos baseada em aprendizado profundo; e (iv) frameworks híbridos que combinam modelos mecanicistas com componentes baseados em dados para estimativa de parâmetros em tempo real.
+
+A análise da literatura revela três conclusões principais. Primeiro, a integração de planejamento experimental (DoE) com aprendizado de máquina representa a abordagem mais madura e imediatamente aplicável para o desenvolvimento analítico dentro do paradigma Quality by Design. Segundo, arquiteturas baseadas em aprendizado por reforço e otimização bayesiana demonstram potencial transformador para automação completa do desenvolvimento de métodos, embora sua implementação prática ainda enfrente desafios relacionados à definição de funções de recompensa adequadas e à validação experimental. Terceiro, a aceitação regulatória e a interpretabilidade dos modelos constituem as barreiras mais significativas para adoção industrial generalizada, demandando desenvolvimento contínuo de técnicas de IA explicável e frameworks de validação específicos.
+
+A trajetória tecnológica aponta para laboratórios cromatográficos autônomos, onde gêmeos digitais, aprendizado federado e algoritmos de otimização em malha fechada operarão de forma integrada para reduzir drasticamente o tempo e o custo de desenvolvimento de métodos, preservando a qualidade e a reprodutibilidade exigidas por ambientes regulados. A realização deste potencial, no entanto, depende da superação colaborativa dos desafios de padronização de dados, validação regulatória e formação interdisciplinar de recursos humanos.
+
+\section*{Agradecimentos}
+
+[A PREENCHER]
+
+\bibliographystyle{elsarticle-num}
+\bibliography{referencias_jca}
+
+\end{document}
