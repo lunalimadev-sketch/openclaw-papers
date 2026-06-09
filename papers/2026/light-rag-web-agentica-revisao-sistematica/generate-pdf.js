@@ -122,6 +122,9 @@ function addMarkdownToPDF(doc, md) {
             doc.addPage();
         }
         
+        // Reset x position to left margin before each line
+        doc.x = doc.page.margins.left;
+        
         // Headers
         if (line.startsWith('# ')) {
             doc.moveDown(0.8);
@@ -198,14 +201,15 @@ function addMarkdownToPDF(doc, md) {
                 // Draw table
                 const tableEndY = drawTable(doc, tableRows, startX, doc.y, columnWidths);
                 doc.y = tableEndY;
+                doc.x = doc.page.margins.left;  // Reset x position after table
                 doc.fillColor('#000000');
             }
         }
         // Horizontal rules
         else if (line === '---') {
             doc.moveDown(0.4);
-            doc.moveTo(doc.x, doc.y)
-               .lineTo(doc.x + pageWidth, doc.y)
+            doc.moveTo(doc.page.margins.left, doc.y)
+               .lineTo(doc.page.margins.left + pageWidth, doc.y)
                .lineWidth(0.5)
                .stroke('#CCCCCC');
             doc.moveDown(0.4);
