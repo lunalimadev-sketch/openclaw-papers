@@ -2,7 +2,9 @@ const PDFDocument = require('pdfkit');
 const fs = require('fs');
 
 // Read the markdown file
-const markdown = fs.readFileSync('artigo_light_rag_web_agentica.md', 'utf8');
+const path = require('path');
+const mdPath = path.join(__dirname, 'artigo_light_rag_web_agentica.md');
+const markdown = fs.readFileSync(mdPath, 'utf8');
 
 // Create PDF document with academic formatting
 const doc = new PDFDocument({
@@ -222,21 +224,54 @@ function addMarkdownToPDF(doc, md) {
         }
         // Regular paragraphs
         else {
-            // Handle inline formatting
+            // Handle inline formatting and links
             let text = line
                 .replace(/\*\*(.*?)\*\*/g, '$1')
                 .replace(/\*(.*?)\*/g, '$1')
                 .replace(/`(.*?)`/g, '$1');
             
-            doc.fontSize(10)
-               .font('Helvetica')
-               .fillColor('#000000')
-               .text(text, {
-                   width: pageWidth,
-                   align: 'justify',
-                   lineGap: 3,
-                   paragraphGap: 5
-               });
+            // Check for URLs and make them clickable
+            const urlRegex = /(https?:\/\/[^\s]+)/g;
+            const parts = text.split(urlRegex);
+            
+            if (parts.length > 1) {
+                // Text with links
+                parts.forEach((part, partIndex) => {
+                    if (part.match(urlRegex)) {
+                        // It's a URL - make it clickable
+                        doc.fontSize(9)
+                           .font('Helvetica')
+                           .fillColor('#0000EE')
+                           .text(part, {
+                               width: pageWidth,
+                               link: part,
+                               underline: true
+                           });
+                    } else if (part.trim()) {
+                        // Regular text
+                        doc.fontSize(10)
+                           .font('Helvetica')
+                           .fillColor('#000000')
+                           .text(part, {
+                               width: pageWidth,
+                               align: 'justify',
+                               lineGap: 3,
+                               paragraphGap: 5
+                           });
+                    }
+                });
+            } else {
+                // No links - regular text
+                doc.fontSize(10)
+                   .font('Helvetica')
+                   .fillColor('#000000')
+                   .text(text, {
+                       width: pageWidth,
+                       align: 'justify',
+                       lineGap: 3,
+                       paragraphGap: 5
+                   });
+            }
             doc.moveDown(0.3);
             i++;
         }
