@@ -22,25 +22,22 @@ const doc = new PDFDocument({
     }
 });
 
-// Color palette
-const colors = {
-    headerBg: '#2E5090',
-    headerText: '#FFFFFF',
-    rowBg1: '#F8F9FA',
-    rowBg2: '#FFFFFF',
-    borderColor: '#CCCCCC',
-    textColor: '#333333',
-    headerBorderColor: '#1E3A6E'
-};
-
-// Helper function to draw a professional table
+// Helper function to draw a minimalist academic table (like OPE-28)
 function drawTable(doc, rows, startX, startY, columnWidths) {
-    const rowHeight = 24;
-    const headerHeight = 28;
-    const borderWidth = 0.5;
-    const padding = 6;
+    const rowHeight = 22;
+    const headerHeight = 24;
+    const borderWidth = 1;
+    const padding = 8;
     
     let currentY = startY;
+    
+    // Draw top line
+    const totalWidth = columnWidths.reduce((a, b) => a + b, 0);
+    doc.moveTo(startX, currentY)
+       .lineTo(startX + totalWidth, currentY)
+       .lineWidth(borderWidth)
+       .stroke('#000000');
+    currentY += 5;
     
     rows.forEach((row, rowIndex) => {
         const isHeader = rowIndex === 0;
@@ -51,37 +48,27 @@ function drawTable(doc, rows, startX, startY, columnWidths) {
         if (currentY + currentRowHeight > doc.page.height - 100) {
             doc.addPage();
             currentY = doc.page.margins.top;
+            // Redraw top line on new page
+            doc.moveTo(startX, currentY)
+               .lineTo(startX + totalWidth, currentY)
+               .lineWidth(borderWidth)
+               .stroke('#000000');
+            currentY += 5;
         }
         
         row.forEach((cell, colIndex) => {
             const cellWidth = columnWidths[colIndex];
             
-            // Draw cell background
-            if (isHeader) {
-                doc.rect(currentX, currentY, cellWidth, currentRowHeight)
-                   .fill(colors.headerBg);
-            } else {
-                const bgColor = rowIndex % 2 === 1 ? colors.rowBg1 : colors.rowBg2;
-                doc.rect(currentX, currentY, cellWidth, currentRowHeight)
-                   .fill(bgColor);
-            }
-            
-            // Draw cell border
-            doc.rect(currentX, currentY, cellWidth, currentRowHeight)
-               .lineWidth(borderWidth)
-               .stroke(colors.borderColor);
-            
             // Draw cell text
-            const fontSize = isHeader ? 9 : 8;
+            const fontSize = isHeader ? 9 : 8.5;
             const font = isHeader ? 'Helvetica-Bold' : 'Helvetica';
-            const textColor = isHeader ? colors.headerText : colors.textColor;
             
             doc.fontSize(fontSize)
                .font(font)
-               .fillColor(textColor)
-               .text(cell, currentX + padding, currentY + (currentRowHeight - fontSize) / 2, {
+               .fillColor('#000000')
+               .text(cell, currentX + padding, currentY + 2, {
                    width: cellWidth - padding * 2,
-                   align: 'center',
+                   align: colIndex === 0 ? 'left' : 'center',
                    lineBreak: false
                });
             
@@ -91,13 +78,20 @@ function drawTable(doc, rows, startX, startY, columnWidths) {
         currentY += currentRowHeight;
     });
     
-    // Draw outer border
-    const totalWidth = columnWidths.reduce((a, b) => a + b, 0);
-    doc.rect(startX, startY, totalWidth, currentY - startY)
-       .lineWidth(1)
-       .stroke(colors.borderColor);
+    // Draw line below header (after first row)
+    const headerEndY = startY + 5 + headerHeight;
+    doc.moveTo(startX, headerEndY)
+       .lineTo(startX + totalWidth, headerEndY)
+       .lineWidth(borderWidth)
+       .stroke('#000000');
     
-    return currentY + 5;
+    // Draw bottom line
+    doc.moveTo(startX, currentY)
+       .lineTo(startX + totalWidth, currentY)
+       .lineWidth(borderWidth)
+       .stroke('#000000');
+    
+    return currentY + 8;
 }
 
 // Helper function to parse markdown and add to PDF
@@ -141,7 +135,7 @@ function addMarkdownToPDF(doc, md) {
             doc.moveDown(0.6);
             doc.fontSize(13)
                .font('Helvetica-Bold')
-               .fillColor('#1E3A6E')
+               .fillColor('#000000')
                .text(line.substring(3), {
                    width: pageWidth
                });
@@ -151,7 +145,7 @@ function addMarkdownToPDF(doc, md) {
             doc.moveDown(0.5);
             doc.fontSize(11)
                .font('Helvetica-Bold')
-               .fillColor('#2E5090')
+               .fillColor('#000000')
                .text(line.substring(4), {
                    width: pageWidth
                });
@@ -161,7 +155,7 @@ function addMarkdownToPDF(doc, md) {
             doc.moveDown(0.4);
             doc.fontSize(10)
                .font('Helvetica-Bold')
-               .fillColor('#3A6FB0')
+               .fillColor('#000000')
                .text(line.substring(5), {
                    width: pageWidth
                });
@@ -211,7 +205,7 @@ function addMarkdownToPDF(doc, md) {
             doc.moveTo(doc.page.margins.left, doc.y)
                .lineTo(doc.page.margins.left + pageWidth, doc.y)
                .lineWidth(0.5)
-               .stroke('#CCCCCC');
+               .stroke('#000000');
             doc.moveDown(0.4);
             i++;
         }
@@ -236,7 +230,7 @@ function addMarkdownToPDF(doc, md) {
             
             doc.fontSize(10)
                .font('Helvetica')
-               .fillColor('#333333')
+               .fillColor('#000000')
                .text(text, {
                    width: pageWidth,
                    align: 'justify',
