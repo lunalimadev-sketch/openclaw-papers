@@ -298,7 +298,7 @@ A convergencia dessas linhas de pesquisa aponta para uma nova geracao de agentes
 
 2. BELYI, M. et al. RAGBench: Explainable Benchmark for Retrieval-Augmented Generation Systems. *arXiv preprint*, 2024. Disponivel em: https://arxiv.org/abs/2407.11005.
 
-3. CHEN, Y. et al. RAP-RAG: Adaptive Planning for Efficient Retrieval-Augmented Generation. *arXiv preprint*, 2025. Disponivel em: https://arxiv.org/abs/2501.12345.
+3. FAN, T. et al. RAP-RAG: A Retrieval-Augmented Generation Framework with Adaptive Retrieval Task Planning. *Electronics*, 14(21), 4269, 2025. Disponivel em: https://www.mdpi.com/2079-9292/14/21/4269.
 
 4. EDGE, D. et al. From Local to Global: A Graph RAG Approach to Query-Focused Summarization. *Microsoft Research*, 2024. Disponivel em: https://arxiv.org/abs/2404.16130.
 
@@ -312,24 +312,24 @@ A convergencia dessas linhas de pesquisa aponta para uma nova geracao de agentes
 
 9. LI, X. et al. xRAG: Extreme Context Compression for Retrieval-Augmented Generation. In: *Advances in Neural Information Processing Systems (NeurIPS)*, 2024.
 
-10. LIU, J. et al. A Survey on Retrieval-Augmented Text Generation for Large Language Models. *ACM Computing Surveys*, 2024.
+10. LIU, J. et al. A Survey on RAG Meeting LLMs: Towards Retrieval-Augmented Large Language Models. *ACM SIGKDD*, 2024. Disponivel em: https://arxiv.org/abs/2405.06211.
 
-11. WANG, H. et al. PISCO: Hybrid Context Compression for Efficient Retrieval-Augmented Generation. *arXiv preprint*, 2025. Disponivel em: https://arxiv.org/abs/2502.67890.
+11. WANG, H. et al. PISCO: Pretty Simple Compression for Retrieval-Augmented Generation. *arXiv preprint*, 2025. Disponivel em: https://arxiv.org/abs/2501.16075.
 
 12. YAN, S. et al. Corrective Retrieval Augmented Generation. *arXiv preprint*, 2024. Disponivel em: https://arxiv.org/abs/2401.15884.
 
-13. YANG, J. et al. Agentic Web: A New Paradigm for Autonomous Web Interaction. *arXiv preprint*, 2025.
+13. YANG, Y. et al. Agentic Web: Weaving the Next Web with AI Agents. *arXiv preprint*, 2025. Disponivel em: https://arxiv.org/abs/2507.21206.
 
-14. ZHANG, W. et al. BRIEF: Bridge-Based Retrieval and In-Context Compression for Efficient Multi-Hop Reasoning. *arXiv preprint*, 2024. Disponivel em: https://arxiv.org/abs/2403.45678.
+14. LI, Y. et al. BRIEF: Bridging Retrieval and Inference for Multi-hop Reasoning via Compression. *arXiv preprint*, 2024. Disponivel em: https://arxiv.org/abs/2410.15277.
 
-15. ZHAO, H. et al. A Survey on Retrieval-Augmented Text Generation for Large Language Models. *arXiv preprint*, 2026.
+15. ZHAO, H. et al. A Survey on Retrieval-Augmented Text Generation for Large Language Models. *ACM Computing Surveys*, 2024. Disponivel em: https://arxiv.org/abs/2404.10981.
 
 16. ZHOU, S. et al. WebArena: A Realistic Web Environment for Building Autonomous Agents. In: *Proceedings of the International Conference on Learning Representations (ICLR)*, 2024.
 
 17. Microsoft Research. Graph Retrieval-Augmented Generation: A Survey. *ACM Transactions on Information Systems (TOIS)*, 2025.
 
-18. When to use Graphs in RAG: A Systematic Analysis. *arXiv preprint*, 2026. Disponivel em: https://arxiv.org/abs/2601.98765.
+18. When to use Graphs in RAG: A Comprehensive Analysis for Graph Retrieval-Augmented Generation. *arXiv preprint*, 2025. Disponivel em: https://arxiv.org/abs/2506.05690.
 
-19. RAGPerf: A Configurable Benchmark for End-to-End RAG Evaluation. *arXiv preprint*, 2026. Disponivel em: https://arxiv.org/abs/2602.12345.
+19. RAGPerf: An End-to-End Benchmarking Framework for Retrieval-Augmented Generation Systems. *arXiv preprint*, 2026. Disponivel em: https://arxiv.org/abs/2603.10765.
 
-20. WebAgents: A Survey on Autonomous Web Interaction with Large Language Models. *arXiv preprint*, 2025.
+20. A Survey of WebAgents: Towards Next-Generation AI Agents for Web Automation with Large Foundation Models. *arXiv preprint*, 2025. Disponivel em: https://arxiv.org/abs/2503.23350.
