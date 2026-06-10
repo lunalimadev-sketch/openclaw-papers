@@ -213,13 +213,13 @@ A convergencia dessas linhas de pesquisa aponta para uma nova geracao de agentes
 
 5. GAO, Y. et al. Retrieval-Augmented Generation for Large Language Models: A Survey. *arXiv preprint*, 2023. Disponivel em: https://arxiv.org/abs/2312.10997.
 
-6. GUO, Z.; XIA, L.; YU, Y.; AO, T.; HUANG, C. LightRAG: Simple and Fast Retrieval-Augmented Generation. In: *Proceedings of the 2025 Conference on Empirical Methods in Natural Language Processing (EMNLP)*, 2025.
+6. GUO, Z.; XIA, L.; YU, Y.; AO, T.; HUANG, C. LightRAG: Simple and Fast Retrieval-Augmented Generation. In: *Proceedings of the 2025 Conference on Empirical Methods in Natural Language Processing (EMNLP)*, 2025. Disponivel em: https://arxiv.org/abs/2410.05779.
 
-7. JEONG, S. et al. Adaptive-RAG: Learning to Adapt Retrieval-Augmented Large Language Models through Question Complexity. In: *Proceedings of the 2024 Conference of the North American Chapter of the Association for Computational Linguistics (NAACL)*, 2024.
+7. JEONG, S. et al. Adaptive-RAG: Learning to Adapt Retrieval-Augmented Large Language Models through Question Complexity. In: *Proceedings of the 2024 Conference of the North American Chapter of the Association for Computational Linguistics (NAACL)*, 2024. Disponivel em: https://arxiv.org/abs/2403.14403.
 
-8. JIN, P. et al. FlashRAG: A Modular Toolkit for Efficient and Customizable Retrieval-Augmented Generation Research. In: *Proceedings of the Web Conference (WWW)*, 2025.
+8. JIN, P. et al. FlashRAG: A Modular Toolkit for Efficient and Customizable Retrieval-Augmented Generation Research. In: *Proceedings of the Web Conference (WWW)*, 2025. Disponivel em: https://arxiv.org/abs/2405.13576.
 
-9. LI, X. et al. xRAG: Extreme Context Compression for Retrieval-Augmented Generation. In: *Advances in Neural Information Processing Systems (NeurIPS)*, 2024.
+9. LI, X. et al. xRAG: Extreme Context Compression for Retrieval-Augmented Generation. In: *Advances in Neural Information Processing Systems (NeurIPS)*, 2024. Disponivel em: https://arxiv.org/abs/2405.13792.
 
 10. LIU, J. et al. A Survey on RAG Meeting LLMs: Towards Retrieval-Augmented Large Language Models. *ACM SIGKDD*, 2024. Disponivel em: https://arxiv.org/abs/2405.06211.
 
@@ -233,9 +233,9 @@ A convergencia dessas linhas de pesquisa aponta para uma nova geracao de agentes
 
 15. ZHAO, H. et al. A Survey on Retrieval-Augmented Text Generation for Large Language Models. *ACM Computing Surveys*, 2024. Disponivel em: https://arxiv.org/abs/2404.10981.
 
-16. ZHOU, S. et al. WebArena: A Realistic Web Environment for Building Autonomous Agents. In: *Proceedings of the International Conference on Learning Representations (ICLR)*, 2024.
+16. ZHOU, S. et al. WebArena: A Realistic Web Environment for Building Autonomous Agents. In: *Proceedings of the International Conference on Learning Representations (ICLR)*, 2024. Disponivel em: https://arxiv.org/abs/2307.13854.
 
-17. Microsoft Research. Graph Retrieval-Augmented Generation: A Survey. *ACM Transactions on Information Systems (TOIS)*, 2025.
+17. Microsoft Research. Graph Retrieval-Augmented Generation: A Survey. *ACM Transactions on Information Systems (TOIS)*, 2025. Disponivel em: https://arxiv.org/abs/2408.08921.
 
 18. When to use Graphs in RAG: A Comprehensive Analysis for Graph Retrieval-Augmented Generation. *arXiv preprint*, 2025. Disponivel em: https://arxiv.org/abs/2506.05690.
 
