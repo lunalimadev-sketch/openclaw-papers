@@ -1,0 +1,196 @@
+\documentclass[OA,linenum]{InterPore}
+
+\artcategory{Review Article}
+
+\vol{0}
+\iss{0}
+\cpyear{2026}
+\doi{00.0000/000000000}
+\recdate{00 Month 2026}
+\accdate{01 Month 2026}
+\pubdate{02 Month 2026}
+
+\graphicspath{
+    {./Figures/}
+    {./logo/}
+}
+
+\begin{document}
+
+\title{Dynamic Workflows com AI Agents e Sub-Agents}
+
+\author[1]{[A PREENCHER]}
+\author[1]{[A PREENCHER]}
+
+\affil[1]{[A PREENCHER]}
+
+\corau{[A PREENCHER], \email{[A PREENCHER]}}
+
+\abstract{Este artigo explora a arquitetura e implementação de workflows dinâmicos utilizando agentes de inteligência artificial (AI Agents) e sub-agentes. Apresentamos uma análise abrangente dos padrões de orquestração, delegação de tarefas e coordenação entre agentes em sistemas multi-agente baseados em modelos de linguagem de grande porte (LLMs). O estudo revisa a literatura recente sobre arquiteturas de sistemas multi-agent, destacando abordagens estáticas versus dinâmicas, mecanismos de delegação inteligente e frameworks de benchmarking. Concluímos que workflows dinâmicos com sub-agentes oferecem vantagens significativas em termos de escalabilidade, flexibilidade e resolução de problemas complexos, apresentando perspectivas promissoras para o desenvolvimento de sistemas de IA autônomos.}
+
+\keyword{Dynamic Workflows; AI Agents; Sub-Agents; Multi-Agent Systems; LLM; Orquestração; Delegação de Tarefas}
+
+\maketitle
+
+\section{Introdução}
+
+A evolução dos sistemas de inteligência artificial tem sido marcada pela transição de modelos monolíticos para arquiteturas distribuídas e colaborativas. Neste contexto, os agentes de IA (AI Agents) emergem como componentes fundamentais para a construção de sistemas capazes de realizar tarefas complexas de forma autônoma e coordenada \cite{li2024}.
+
+Os workflows dinâmicos representam um paradigma avançado de orquestração onde a sequência e a atribuição de tarefas são determinadas em tempo real com base no contexto, nos resultados parciais e nas capacidades dos agentes disponíveis \cite{yue2026}. Diferentemente dos workflows estáticos, onde o fluxo de execução é pré-definido, os workflows dinâmicos permitem adaptação e otimização contínua durante a execução.
+
+A introdução de sub-agentes - agentes especializados que são criados dinamicamente para executar tarefas específicas - adiciona uma camada adicional de modularidade e escalabilidade. Estes sub-agentes podem ser orquestrados por um agente principal, que coordena sua execução e integra os resultados \cite{tomasev2026}.
+
+O objetivo deste artigo é apresentar uma análise abrangente das arquiteturas de workflows dinâmicos com AI Agents e sub-agentes, revisando os principais padrões de design, mecanismos de delegação e frameworks de avaliação. Buscamos fornecer uma visão técnica acessível para desenvolvedores e arquitetos de software interessados em implementar sistemas multi-agent eficientes.
+
+\section{Fundamentos Teóricos}
+
+\subsection{Agentes de IA e Sistemas Multi-Agent}
+
+Um agente de IA é uma entidade computacional capaz de perceber seu ambiente, tomar decisões e agir para atingir objetivos específicos. Quando múltiplos agentes interagem e colaboram para resolver problemas complexos, temos um Sistema Multi-Agent (MAS) \cite{li2024}.
+
+Os LLMs (Large Language Models) revolucionaram a área de agentes de IA ao fornecer capacidades naturais de linguagem, raciocínio e tomada de decisão. Agentes baseados em LLMs podem interpretar instruções em linguagem natural, planejar sequências de ações e gerar código ou conteúdo adaptado ao contexto \cite{ahmad2026}.
+
+\subsection{Workflows Dinâmicos vs. Estáticos}
+
+Workflows estáticos seguem sequências pré-definidas de tarefas, onde cada passo é conhecido antecipadamente. Esta abordagem é adequada para processos repetitivos e bem definidos, mas limitada para problemas complexos e mutáveis.
+
+Workflows dinâmicos, por outro lado, permitem modificação em tempo real da sequência de execução. As decisões sobre qual tarefa executar, qual agente delegar e quando adaptar o plano são tomadas com base no contexto atual e nos resultados parciais \cite{yue2026}.
+
+\subsection{Sub-Agentes e Delegação Inteligente}
+
+Sub-agentes são agentes especializados criados dinamicamente para executar tarefas específicas. O agente principal pode delegar sub-tarefas a sub-agentes com competências específicas, coordenando sua execução e integrando os resultados \cite{tomasev2026}.
+
+A delegação inteligente envolve análise das capacidades dos agentes disponíveis, estimativa de complexidade das tarefas e otimização da distribuição de trabalho para maximizar eficiência e qualidade dos resultados.
+
+\section{Arquiteturas de Workflows Dinâmicos}
+
+\subsection{Arquitetura Baseada em Orquestração}
+
+Nesta arquitetura, um agente orquestrador central coordena a execução do workflow, definindo a sequência de tarefas e delegando a sub-agentes especializados. O orquestrador mantém o estado global do processo e toma decisões sobre adaptações necessárias.
+
+Vantagens incluem controle centralizado que facilita monitoramento e depuração, coordenação eficiente entre agentes, e estado global disponível para tomada de decisão. Como desafios, destacam-se ponto único de falha, possível gargalo de desempenho, e complexidade crescente com muitos agentes.
+
+\subsection{Arquitetura Baseada em Decentralização}
+
+Em arquiteturas descentralizadas, os agentes comunicam-se diretamente entre si, sem um orquestrador central. Cada agente toma decisões autônomas com base em informações locais e mensagens recebidas de outros agentes.
+
+Vantagens incluem escalabilidade superior, tolerância a falhas, e flexibilidade e adaptabilidade. Desafios incluem coordenação mais complexa, consenso que pode ser difícil de alcançar, e estado distribuído que dificulta monitoramento.
+
+\subsection{Arquitetura Híbrida}
+
+Arquiteturas híbridas combinam elementos de orquestração e descentralização, utilizando orquestradores locais para sub-fluxos enquanto permite comunicação direta entre agentes quando apropriado.
+
+\section{Padrões de Delegação e Orquestração}
+
+\subsection{Padrão Router}
+
+O agente router analisa a tarefa recebida e encaminha para o agente ou sub-agente mais adequado com base em suas capacidades. Este padrão é eficiente para distribuição de trabalho em ambientes com agentes especializados.
+
+\subsection{Padrão Chain}
+
+O padrão chain encadeia múltiplos agentes em sequência, onde a saída de um agente é a entrada do próximo. Ideal para processos lineares com etapas dependentes.
+
+\subsection{Padrão Tree}
+
+O padrão tree organiza agentes em estrutura hierárquica, onde agentes pais delegam sub-tarefas a agentes filhos. Facilita decomposição de problemas complexos em sub-problemas menores.
+
+\subsection{Padrão Graph}
+
+O padrão graph permite relações complexas entre agentes, incluindo dependências circulares e paralelismo. Mais flexível, porém mais complexo de implementar e gerenciar.
+
+\section{Mecanismos de Delegação Inteligente}
+
+\subsection{Análise de Capacidades}
+
+A delegação inteligente requer avaliação precisa das capacidades de cada agente, incluindo especialização e conhecimento disponível, desempenho histórico em tarefas similares, disponibilidade e carga de trabalho atual, e custos computacionais associados.
+
+\subsection{Estimativa de Complexidade}
+
+Antes da delegação, é necessário estimar a complexidade da tarefa considerando número de passos necessários, dependências entre sub-tarefas, requisitos de contexto e memória, e prazos e restrições de tempo.
+
+\subsection{Otimização Dinâmica}
+
+Mecanismos de otimização ajustam continuamente a distribuição de trabalho com base em feedback em tempo real dos agentes, mudanças no contexto ou requisitos, disponibilidade de recursos, e qualidade dos resultados parciais.
+
+\section{Frameworks e Ferramentas}
+
+\subsection{LangChain e LangGraph}
+
+LangChain fornece abordagem baseada em grafos para orquestração de agentes, permitindo definição flexível de fluxos de execução e integração com múltiplos LLMs.
+
+\subsection{AutoGen}
+
+AutoGen da Microsoft oferece framework para construção de sistemas multi-agente conversacionais, facilitando comunicação e coordenação entre agentes.
+
+\subsection{CrewAI}
+
+CrewAI foca em simular equipes de agentes trabalhando juntos, com papéis bem definidos e mecanismos de colaboração.
+
+\subsection{Microsoft Semantic Kernel}
+
+Semantic Kernel integra orquestração de agentes com memória semântica e plugins, permitindo construção de sistemas complexos com persistência de estado.
+
+\section{Casos de Uso e Aplicações}
+
+\subsection{Desenvolvimento de Software}
+
+Workflows dinâmicos com sub-agentes são particularmente eficazes para desenvolvimento de software, onde diferentes agentes podem especializar-se em análise de requisitos, geração de código, revisão e teste, e documentação.
+
+\subsection{Pesquisa e Análise}
+
+Sistemas multi-agent podem coordenar pesquisa em múltiplas fontes, síntese de informações e geração de relatórios, com agentes especializados em diferentes domínios.
+
+\subsection{Automação de Processos Empresariais}
+
+Workflows dinâmicos permitem automação adaptativa de processos complexos que envolvem múltiplos sistemas e tomada de decisão contextal.
+
+\section{Desafios e Limitações}
+
+\subsection{Consistência e Coordenação}
+
+Manter consistência entre múltiplos agentes autônomos é desafiador, especialmente quando agentes tomam decisões independentes que podem conflitar.
+
+\subsection{Memória e Contexto}
+
+Agentes devem compartilhar contexto e memória para manter coerência, mas mecanismos de compartilhamento podem introduzir overhead e complexidade.
+
+\subsection{Segurança e Controle}
+
+Sistemas com múltiplos agentes autônomos apresentam riscos de segurança adicionais, requerendo mecanismos robustos de controle e auditoria.
+
+\subsection{Custos Computacionais}
+
+Orquestração de múltiplos LLMs pode ser computacionalmente custosa, requerendo otimização cuidadosa para aplicações em larga escala.
+
+\section{Perspectivas Futuras}
+
+\subsection{Agentes Auto-Representáveis}
+
+Desenvolvimento de agentes capazes de modificar seu próprio comportamento e capacidades com base em experiência acumulada.
+
+\subsection{Aprendizado Colaborativo}
+
+Sistemas onde agentes aprendem uns com os outros, compartilhando conhecimento e melhorando coletivamente.
+
+\subsection{Integração com Sistemas Físicos}
+
+Expansão de workflows dinâmicos para controle de robôs e sistemas físicos, combinando IA com automação do mundo real.
+
+\subsection{Padrões de Interoperabilidade}
+
+Desenvolvimento de padrões abertos para comunicação e interoperabilidade entre sistemas multi-agent de diferentes fornecedores.
+
+\section{Conclusão}
+
+Workflows dinâmicos com AI Agents e sub-agentes representam uma evolução significativa na arquitetura de sistemas de IA. A capacidade de adaptar sequências de execução em tempo real, delegar tarefas a sub-agentes especializados e coordenar múltiplos agentes de forma inteligente oferece vantagens substanciais em termos de escalabilidade, flexibilidade e resolução de problemas complexos.
+
+Os padrões de orquestração revisados - router, chain, tree e graph - fornecem frameworks abrangentes para construção de sistemas multi-agent. Mecanismos de delegação inteligente, baseados em análise de capacidades e estimativa de complexidade, permitem otimização dinâmica da distribuição de trabalho.
+
+Embora desafios permaneçam em termos de consistência, memória, segurança e custos computacionais, as perspectivas futuras são promissoras. O desenvolvimento de agentes auto-representáveis, aprendizado colaborativo e integração com sistemas físicos expandirá ainda mais as possibilidades de aplicação.
+
+Para desenvolvedores e arquitetos de software, a adoção de workflows dinâmicos com sub-agentes representa oportunidade de construir sistemas mais robustos, escaláveis e adaptáveis, capacitados para enfrentar os desafios crescentes da automação inteligente.
+
+\bibliographystyle{plainurl}
+\bibliography{referencias_dynamic}
+
+\end{document}
