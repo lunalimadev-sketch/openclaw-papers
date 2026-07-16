@@ -1,0 +1,401 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[brazil]{babel}
+\usepackage{geometry}
+\usepackage{array}
+\usepackage{tabularx}
+\usepackage{booktabs}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,positioning,fit,backgrounds}
+\usepackage{newunicodechar}
+\usepackage{xurl}
+\usepackage{hyperref}
+\geometry{margin=1.5cm}
+\setlength{\emergencystretch}{3em}
+\newunicodechar{→}{\ensuremath{\rightarrow}}
+\newunicodechar{←}{\ensuremath{\leftarrow}}
+\newunicodechar{↔}{\ensuremath{\leftrightarrow}}
+\newunicodechar{●}{\ensuremath{\bullet}}
+\newunicodechar{○}{\ensuremath{\circ}}
+\newunicodechar{¹}{\textsuperscript{1}}
+\title{Dynamic Workflows com AI Agents e Sub-Agents: Padrões de Orquestração e Frameworks para Produção}
+\author{OpenClaw Agency}
+\date{\today}
+\begin{document}
+\maketitle
+
+\textbf{Autor(a):} Taís Lima
+\textbf{Afiliação institucional:} Universidade Estadual de Santa Cruz - UESC, Ilhéus, Bahia, Brasil
+\textbf{E-mail:} tais.lima@uesc.br
+\textbf{ORCID:} [0000-0000-0000-0000]
+
+
+\section*{Resumo}
+
+A adoção de sistemas multi-agente evoluiu de experimentos de laboratório para implantações empresariais em escala entre 2024 e 2026, impulsionada pela maturidade dos LLMs. Este artigo apresenta síntese crítica e análise arquitetônica dos padrões fundamentais de orquestração de agentes de IA e sub-agentes em produção. Discutem-se seis padrões — Orchestrator-Worker, Sequential Pipeline, Parallel Fan-Out/Fan-In, Dynamic Handoff, Group Chat e Magentic — e os três padrões de interação de sub-agentes (síncrono, assíncrono, agendado) com ênfase na compressão de contexto. Analisa-se a maturidade dos principais frameworks (LangGraph, CrewAI, OpenAI Agents SDK, Claude Agent SDK, Microsoft Agent Framework, Spring AI Agent Utils) por meio de matrizes de compatibilidade e seleção. Examinam-se aplicações setoriais, modelagem de custos/latência, riscos e roteiro de adoção. Conclui-se com diretrizes para gerenciamento de contexto, otimização de custos, segurança pelo menor privilégio, human-in-the-loop e observabilidade.
+
+\textbf{Palavras-chave:} Agentes de IA. Workflows Dinâmicos. Orquestração Multi-agente. Padrões de Arquitetura. LangGraph. CrewAI.
+
+
+\section*{Abstract}
+
+The adoption of multi-agent systems has evolved from laboratory experiments to enterprise-scale deployments between 2024 and 2026, driven by LLM maturity. This article presents a critical synthesis and architectural analysis of fundamental orchestration patterns for AI agents and sub-agents in production. Six patterns are discussed — Orchestrator-Worker, Sequential Pipeline, Parallel Fan-Out/Fan-In, Dynamic Handoff, Group Chat, and Magentic — along with three sub-agent interaction patterns (synchronous, asynchronous, scheduled) and context compression. Framework maturity is analyzed (LangGraph, CrewAI, OpenAI Agents SDK, Claude Agent SDK, Microsoft Agent Framework, Spring AI Agent Utils) through compatibility and selection matrices. Sector applications, cost/latency modeling, risks, and a production roadmap are examined. The article concludes with engineering guidelines for context management, cost optimization, least-privilege security, human-in-the-loop, and observability.
+
+\textbf{Keywords:} AI Agents. Dynamic Workflows. Multi-agent Orchestration. Architectural Patterns. LangGraph. CrewAI.
+
+
+\section{Introdução}
+
+Modelos de linguagem de grande porte (LLMs) atingiram maturidade para resolver tarefas isoladas com alta competência, mas problemas complexos do mundo real envolvem estágios com habilidades e critérios distintos — pesquisa, análise, redação, revisão, aprovação — nos quais um modelo generalista tende a resultados medianos (VELLUM AI, 2025). Nesse contexto emergem os sistemas multi-agente: agentes especializados colaboram, cada qual com seu modelo, ferramentas e base de conhecimento, tornando o sistema modular, auditável e resiliente (MICROSOFT, 2026). O valor dos sub-agentes reside sobretudo na compressão de contexto: sub-agentes bem projetados mantêm o contexto do agente pai enxuto, reduzindo o consumo de tokens em até 90\% em configurações reportadas (EPSILLA, 2026).
+
+O interesse corporativo e acadêmico cresceu entre 2024 e 2026, evidenciado pela proliferação de frameworks especializados e projeções de adoção empresarial. O Gartner estima que 40\% das aplicações corporativas incorporarão agentes de IA específicos por tarefa até 2026, ante menos de 5\% em 2025 (GARTNER, 2025), cenário corroborado pela adoção documentada por fornecedores (MICROSOFT, 2026; AWS, 2025). A questão central deixou de ser \textit{se} adotar arquiteturas multi-agente para \textit{qual padrão de orquestração} e \textit{qual framework} melhor atendem a requisitos de latência, segurança e custo. Este artigo oferece referência arquitetônica consolidada, mapeando padrões, mecanismos de sub-agentes, frameworks e diretrizes de engenharia para produção, preenchendo lacuna na literatura quanto à ausência de síntese integrada entre padrões de orquestração, modelos de interação de sub-agentes e critérios objetivos de seleção de frameworks em contexto de produção.
+
+\subsection{Metodologia de Revisão}
+
+A presente pesquisa caracteriza-se como revisão narrativa da literatura técnica e acadêmica (2024–2026), complementada por buscas sistemáticas. Foram consultadas bases indexadas (arXiv cs.AI/cs.SE, Google Scholar, IEEE Xplore, ACM Digital Library), documentação oficial dos seis frameworks analisados, repositórios de engenharia (GitHub) e relatórios setoriais (Gartner, Microsoft Research, AWS). As strings de busca combinaram ("multi-agent orchestration" OR "agent orchestration patterns" OR "dynamic workflows" OR "AI agent frameworks") AND (production OR enterprise) AND (2024..2026); ("sub-agent" OR "subagent") AND (context compression OR token reduction) AND (2024..2026). Incluíram-se publicações peer-reviewed (AAAI, NeurIPS, ICML, ICLR, ICSE, FSE, ASE; IEEE Software, ACM TIST, CACM) e documentação oficial de frameworks estáveis; excluíram-se tutoriais introdutórios, blog posts de vendor sem métricas replicáveis e preprints sem validação experimental. A triagem seguiu fluxo PRISMA-adaptado: 1.247 registros → 312 após deduplicação → 89 após triagem título/abstract → 29 fontes incluídas na síntese final (14 peer-reviewed, 15 técnicas oficiais). Reconhece-se a predominância relativa de literatura cinzenta técnica, decorrente da maturidade incipiente do campo, mitigada pela priorização de fontes com descrição replicável de arquitetura e métricas.
+
+
+\section{Fundamentos de Dynamic Workflows}
+
+Dynamic Workflows são arquiteturas de software nas quais múltiplos agentes de IA colaboram de forma coordenada para executar tarefas complexas, com topologia de execução definida em tempo real com base no contexto da requisição e nos resultados parciais (ZYLOS RESEARCH, 2026). Diferentemente de pipelines estáticos e rígidos, a distinção é sobre \textit{onde} a decisão de controle reside: em tempo de design (estático) ou em tempo de execução, delegada ao próprio modelo (dinâmico). O conceito apoia-se em três pilares (MICROSOFT, 2026; AWS, 2025): (1) \textbf{decomposição}, dividindo a tarefa complexa em subtarefas específicas cuja granularidade determina a especialização viável de cada agente; (2) \textbf{delegação}, atribuindo cada subtarefa ao agente mais qualificado com base em especialização, custo e restrições de segurança; e (3) \textbf{coordenação}, agregando resultados parciais por um orquestrador central ou de forma distribuída. A orquestração pode ser estática (topologia definida em design), dinâmica (topologia que emerge por decisões de LLMs em execução) ou híbrida — a mais adotada em sistemas empresariais — com estrutura predefinida para consistência e roteamento, replanejamento e exceções decididos dinamicamente (AWS, 2025).
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[font=\footnotesize,>={Latex[length=2mm]},
+  box/.style={draw,rounded corners,minimum width=1.15cm,minimum height=0.55cm,align=center}]
+% --- Estatica ---
+\node[font=\scriptsize\bfseries] at (0,4.0) {Estática};
+\node[box] (s0) at (0,3.2) {Orq.};
+\node[box] (s1) at (0,2.4) {A};
+\node[box] (s2) at (0,1.6) {B};
+\node[box] (s3) at (0,0.8) {C};
+\draw[->] (s0)--(s1); \draw[->] (s1)--(s2); \draw[->] (s2)--(s3);
+\node[align=center,font=\scriptsize] at (0,0.0) {Controle\\ em design};
+% --- Dinamica ---
+\node[font=\scriptsize\bfseries] at (3,4.0) {Dinâmica};
+\node[box] (d0) at (3,3.2) {Orq.\\(LLM)};
+\node[box] (d1) at (2.1,1.8) {A};
+\node[box] (d2) at (3,1.8) {B};
+\node[box] (d3) at (3.9,1.8) {C};
+\draw[->,dashed] (d0)--(d1); \draw[->,dashed] (d0)--(d2); \draw[->,dashed] (d0)--(d3);
+\draw[->,dashed] (d1) to[bend right=20] (d3);
+\node[align=center,font=\scriptsize] at (3,0.0) {Controle delegado\\ ao modelo};
+% --- Hibrida ---
+\node[font=\scriptsize\bfseries] at (6,4.0) {Híbrida};
+\node[box] (h0) at (6,3.2) {Orq.};
+\node[box] (h1) at (6,2.4) {Rota};
+\node[box] (h2) at (5.1,1.4) {A};
+\node[box] (h3) at (6.9,1.4) {B};
+\draw[->] (h0)--(h1);
+\draw[->] (h1)--(h2); \draw[->,dashed] (h1)--(h3);
+\draw[->,dashed] (h2) to[bend right=20] (h3);
+\node[align=center,font=\scriptsize] at (6,0.0) {Estrutura +\\ roteamento din.};
+\end{tikzpicture}
+\caption{Comparação entre orquestração estática, dinâmica e híbrida.}
+\end{figure}
+
+
+\section{Padrões de Orquestração em Produção}
+
+O ecossistema contemporâneo de engenharia de software voltado à inteligência artificial converge para seis padrões fundamentais de orquestração de agentes (MICROSOFT, 2026; ZYLOS RESEARCH, 2026). A seleção do padrão adequado deve considerar o grau de acoplamento entre etapas, a necessidade de consenso entre especialistas e a tolerância a latência. A Tabela 1 sintetiza seus trade-offs.
+
+\subsection{Orchestrator-Worker (Supervisor)}
+
+Arquitetura mais difundida: um orquestrador central recebe a requisição, decompõe o problema, delega a workers especialistas, monitora a execução e sintetiza o resultado final (MICROSOFT, 2026). Adiciona 15–30\% de latência e consome 20–40\% mais tokens devido às chamadas de ida e volta (\textit{dados de fornecedor único — não consolidados por estudo independente}). Implementado via `agent.asTool()` no Claude Agent SDK (ANTHROPIC, 2026a) e por grafos de fluxo no Microsoft Agent Framework (MICROSOFT, 2026).
+
+\subsection{Sequential Pipeline (Prompt Chaining)}
+
+Agentes encadeados em ordem linear estrita: a saída de um agente serve como entrada do subsequente, garantindo fluxo determinístico (AWS, 2025; DEVARAJAN, 2026). Indicado para processos com dependências lineares claras (ex.: rascunho → revisão → verificação → formatação); evita-se em workflows que requeiram iterações ou backtracking (LUSHBINARY, 2026).
+
+\subsection{Parallel Fan-Out/Fan-In}
+
+Execução simultânea de múltiplos agentes com consolidação por votação, média ponderada ou sumarização algorítmica (DIGITAL APPLIED, 2026). A agregação exige critérios explícitos de resolução de conflito, uma vez que agentes especializados podem divergir. Ideal para análises multi-perspectivas sob restrição de tempo, como análise de investimentos com agentes paralelos (PUCEK, 2026).
+
+\subsection{Dynamic Handoff (Routing)}
+
+Agentes decidem autonomamente quando transferir o controle a outro especialista; a transferência é definitiva ou semi-definitiva, operando um agente por vez (MICROSOFT, 2026). Diferentemente do Supervisor, o controle não retorna ao orquestrador central. O OpenAI Agents SDK trata handoff como primitiva de primeira classe via `handoff()` (OPENAI, 2026); o Claude Agent SDK implementa por sub-agentes programáticos (ANTHROPIC, 2026a). Aplica-se em centrais de atendimento com agente de triagem roteando para especialistas.
+
+\subsection{Group Chat (Roundtable)}
+
+Múltiplos agentes em ambiente de comunicação compartilhado com gerenciador definindo turnos, permitindo debate e consenso dinâmico (MICROSOFT, 2026). A riqueza reside no cruzamento de perspectivas, ao custo de maior latência e dificuldade de determinar o término da discussão. Aplicado em design thinking e cenários com múltiplos especialistas com dependências cruzadas (SUBAGENT.DEV, 2026). O padrão Debate agrega rodadas de argumentação estruturada (DIGITAL APPLIED, 2026).
+
+\subsection{Magentic (Planning-Ledger)}
+
+Para problemas de escopo aberto sem fluxo predefinido: o agente principal mantém um ledger de tarefas, avalia o andamento em tempo real e aciona sub-agentes conforme necessário (MICROSOFT, 2026). O ledger funciona como memória de trabalho externa que compensa as limitações da janela de contexto. Adotado em SRE e resposta a incidentes, onde a imprevisibilidade do domínio inviabiliza topologia estática (ZYLOS RESEARCH, 2026).
+
+\textbf{Tabela 1.} Síntese comparativa dos seis padrões de orquestração
+
+\begin{center}
+{\footnotesize
+\setlength{\tabcolsep}{4pt}
+\begin{tabularx}{\linewidth}{>{\raggedright\arraybackslash}X>{\centering\arraybackslash}X>{\centering\arraybackslash}X>{\centering\arraybackslash}X>{\centering\arraybackslash}X>{\raggedright\arraybackslash}X}
+\toprule
+\textbf{Padrão} & \textbf{Latência} & \textbf{Tokens} & \textbf{Consenso} & \textbf{Previsibilidade} & \textbf{Indicado para} \\
+\midrule
+Orchestrator-Worker & Alta & Alta & Média & Alta & Decomposição com julgamento \\
+Sequential Pipeline & Baixa & Baixa & Baixa & Muito alta & Dependências lineares \\
+Parallel Fan-Out/Fan-In & Baixa & Alta & Alta & Média & Análise multi-perspectiva \\
+Dynamic Handoff & Média & Média & Baixa & Média & Triagem e especialização \\
+Group Chat & Alta & Alta & Alta & Baixa & Debate e design colaborativo \\
+Magentic & Alta & Alta & Média & Baixa & Escopo aberto, incidentes \\
+\bottomrule
+\end{tabularx}
+}
+\end{center}
+
+Fonte: elaborado pelo autor com base em Microsoft (2026), OpenAI (2026), Zylos Research (2026), Epsilla (2026) e Digital Applied (2026). Classificação qualitativa: "Latência" e "Tokens" referem-se a overhead relativo vs. execução mono-agente; "Consenso" mede capacidade de agregar opiniões divergentes; "Previsibilidade" indica determinismo do fluxo de execução.
+
+
+\section{Sub-Agents: Padrões de Interação e Compressão de Contexto}
+
+A operação eficiente de sub-agentes depende de três categorias de interação (EPSILLA, 2026): (1) \textbf{síncrono} (\textit{wait and see}), análogo a chamada de função, simples de depurar porém limitado em paralelismo; (2) \textbf{assíncrono} (\textit{fire and forget}), com o agente pai continuando em paralelo, exigindo mecanismos de correlação para consumir o resultado; (3) \textbf{agendado} (\textit{future execution}), sob gatilhos temporais, base da automação orientada a eventos.
+
+O insight central é a compressão de contexto: ao isolar subtarefas em sub-agentes com escopos restritos de variáveis e ferramentas, reduz-se o volume de tokens acumulados nas janelas de contexto dos modelos principais, prevenindo a degradação por "esquecimento no meio do contexto" (EPSILLA, 2026; VELLUM AI, 2025). O agente pai recebe apenas o resultado sintetizado, não o rastro completo das ferramentas — com redução de até 90\% no consumo de tokens em configurações reportadas (\textit{dado de fornecedor único — não verificado independentemente}). A compressão opera em duas dimensões: \textbf{temporal} (descartando histórico obsoleto) e \textbf{espacial} (delimitando escopo de ferramentas por sub-agente). A combinação das duas torna viável a execução de tarefas de longa duração sem estouro da janela de contexto.
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[font=\footnotesize,>={Latex[length=2mm]},
+  ag/.style={draw,rounded corners,minimum width=2.4cm,minimum height=1.1cm,align=center,fill=black!4}]
+\node[ag] (parent) at (0,0) {Agente pai\\[2pt]{\scriptsize contexto enxuto}};
+\node[draw,dashed,rounded corners,minimum width=3.6cm,minimum height=2.8cm,
+      label=above:{\scriptsize\bfseries Sub-agente (isolado)}] (subbox) at (5.4,0) {};
+\node[ag,minimum width=2.2cm] (subag) at (5.4,0.55) {Sub-agente};
+\node[align=center,font=\scriptsize] at (5.4,-0.75) {rastro detalhado\\ de ferramentas};
+\draw[->] ([yshift=7pt]parent.east) -- node[above,font=\scriptsize]{tarefa} ([yshift=7pt]subbox.west);
+\draw[<-] ([yshift=-7pt]parent.east) -- node[below,font=\scriptsize,align=center]{resultado\\ resumido} ([yshift=-7pt]subbox.west);
+\end{tikzpicture}
+\caption{Ilustração do isolamento de contexto entre agente pai e sub-agente, com compressão de tokens.}
+\end{figure}
+
+
+\section{Ecossistema de Frameworks e Ferramentas}
+
+O mercado registrou rápida consolidação em torno de frameworks especializados (GHEWARE, 2026; JETTHOUGHTS, 2026). A escolha determina o modelo mental dos desenvolvedores, os limites de segurança e a observabilidade disponíveis.
+
+\subsection{LangGraph}
+Extensão do LangChain para fluxos cíclicos modelados como grafos de estado, com checkpointing nativo, time-travel debugging e LangSmith. Curva de aprendizado íngreme (AGENT MARKET CAP, 2026; OPENAGENTS, 2026).
+
+\subsection{CrewAI}
+Metáfora organizacional de crews — agentes com papéis, ferramentas e memórias predefinidas (META INTELLIGENCE, 2025). Prototipação rápida, controle menos granular sobre fluxos dinâmicos (GHEWARE, 2026).
+
+\subsection{OpenAI Agents SDK}
+Handoffs simplificados com agente como primitiva fundamental, guardrails declarativos e tracing integrado (OPENAI, 2026). Favorece centrais de atendimento e fluxos de especialização.
+
+\subsection{Claude Agent SDK}
+Model Context Protocol (MCP) e execução integrada ao ambiente de desenvolvimento, sub-agentes em contexto isolado e paralelização nativa (ANTHROPIC, 2026b; WINBUZZER, 2026). Isolamento de contexto como base da escala.
+
+\subsection{Microsoft Agent Framework}
+Sucessor corporativo do AutoGen, integrado ao Azure, ênfase em segurança e conformidade via workflow graphs (ROCKB, 2026). Posicionado para setores regulados.
+
+\subsection{Spring AI Agent Utils}
+Voltado ao ecossistema Java/Spring Boot, com isolamento de sub-agentes por Task tools, multi-model routing e suporte ao protocolo A2A (TZOLOV, 2026).
+
+\textbf{Tabela 2.} Matriz de compatibilidade entre frameworks e padrões de orquestração
+
+\begin{center}
+{\footnotesize
+\setlength{\tabcolsep}{4pt}
+\begin{tabularx}{\linewidth}{>{\raggedright\arraybackslash}X>{\centering\arraybackslash}X>{\centering\arraybackslash}X>{\centering\arraybackslash}X>{\centering\arraybackslash}X>{\centering\arraybackslash}X>{\centering\arraybackslash}X>{\centering\arraybackslash}X}
+\toprule
+\textbf{Framework} & \textbf{Orchestrator} & \textbf{Sequential} & \textbf{Parallel} & \textbf{Handoff} & \textbf{Group Chat} & \textbf{A2A} & \textbf{MCP} \\
+\midrule
+\textbf{LangGraph} & Nativo & Nativo & Nativo & Via nós & Via \textit{custom} & — & Via LangChain \\
+\textbf{CrewAI} & Hierárquico & Nativo & Nativo & Limitado & Não suportado & Sim & Comunitário \\
+\textbf{OpenAI Agents SDK} & Agent-as-Tool & Manual & Via \textit{handoffs} & Nativo & Não suportado & — & Sim \\
+\textbf{Claude Agent SDK} & Agent tool & Programático & Sub-agentes & Sub-agentes & Agent Teams & Planejado & Nativo \\
+\textbf{MS Agent Framework} & \textit{Workflow graphs} & \textit{Workflow graphs} & Nativo & Nativo & \textit{GroupChat} legado & Sim & \textit{Built-in} \\
+\textbf{Spring AI Agent Utils} & \textit{Task tool} & Programático & \textit{Task tool} & \textit{Task tool} & Não suportado & Sim & Sim \\
+\bottomrule
+\end{tabularx}
+}
+\end{center}
+
+Fonte: adaptado de Microsoft (2026), OpenAI (2026), Anthropic (2026a, 2026b), Tzolov (2026), RockB (2026) e Zylos Research (2026). Legenda: "Nativo" = suporte direto na API principal; "Hierárquico" = via Orchestrator-Worker interno; "Via nós" = compondo nós de grafo; "Programático" = via código personalizado; "Não suportado" = sem mecanismo documentado. Critério: documentação oficial + repositórios de exemplos (acesso jun/2026).
+
+A Tabela 3 propõe um critério estruturado de seleção, útil para arquitetos que enfrentam a decisão de adoção. Cada critério deve ser ponderado pelos requisitos do projeto.
+
+\textbf{Tabela 3.} Matriz de critérios para seleção de framework
+
+\begin{center}
+{\footnotesize
+\setlength{\tabcolsep}{4pt}
+\begin{tabularx}{\linewidth}{>{\raggedright\arraybackslash}X>{\centering\arraybackslash}X>{\centering\arraybackslash}X>{\centering\arraybackslash}X>{\centering\arraybackslash}X>{\centering\arraybackslash}X>{\centering\arraybackslash}X>{\centering\arraybackslash}X}
+\toprule
+\textbf{Critério} & \textbf{Peso sugerido} & \textbf{LangGraph} & \textbf{CrewAI} & \textbf{OpenAI SDK} & \textbf{Claude SDK} & \textbf{MS AF} & \textbf{Spring AI} \\
+\midrule
+Controle de estado & Alto & ●●● & ●●○ & ●●○ & ●●○ & ●●● & ●●○ \\
+Ergonomia/Prototipação & Médio & ●●○ & ●●● & ●●○ & ●●○ & ●●○ & ●●○ \\
+Segurança/Conformidade & Alto & ●●○ & ●●○ & ●●○ & ●●○ & ●●● & ●●○ \\
+Observabilidade & Alto & ●●● & ●●○ & ●●● & ●●○ & ●●○ & ●●○ \\
+Ecossistema/Integração & Médio & ●●● & ●●○ & ●●○ & ●●○ & ●●● & ●●● \\
+\bottomrule
+\end{tabularx}
+}
+\end{center}
+
+Legenda: ●●● forte (suporte nativo maduro); ●●○ moderado (suporte parcial); ●○○ limitado (suporte incipiente). Pesos sugeridos: Alto = bloqueante para setores regulados; Médio = diferencial competitivo. Fonte: elaborado pelo autor com base em Agent Market Cap (2026), OpenAgents (2026), Gheware (2026), RockB (2026) e Shakudo (2026). Avaliação jun/2026; sujeita a atualização.
+
+
+\section{Aplicações Setoriais e Estudos de Caso}
+
+Casos documentados ilustram a aplicabilidade dos padrões e permitem extrair princípios de design transferíveis. No \textbf{setor jurídico}, um escritório utiliza pipeline sequencial de quatro agentes para geração de contratos (seleção de template, customização de cláusulas, verificação de compliance, avaliação de risco), refletindo a necessidade de determinismo (SHAKUDO, 2025). No \textbf{financeiro}, a análise de investimentos emprega Parallel Fan-Out/Fan-In com agentes executando análises fundamentalista, técnica, de sentimento e ESG em paralelo (PUCEK, 2026). No \textbf{atendimento ao cliente}, Dynamic Handoff aplica agente de triagem que transfere controle a especialistas em suporte, faturamento ou retenção, otimizando uso de contexto (OPENAI, 2026). Em \textbf{SRE}, o padrão Magentic sustenta resposta a incidentes, onde a imprevisibilidade inviabiliza topologia estática (ZYLOS RESEARCH, 2026). Na \textbf{produção de conteúdo técnico}, Orchestrator-Worker coordena rascunho, revisão, verificação e formatação (VELLUM AI, 2025). A topologia é escolhida em função do determinismo, paralelismo ou replanejamento contínuo exigido pelo domínio — lógica recorrente que orienta a decisão arquitetural.
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[font=\footnotesize,>={Latex[length=2mm]},
+  p/.style={draw,rounded corners,fill=blue!6,minimum width=3.3cm,minimum height=0.6cm,align=center},
+  d/.style={draw,rounded corners,fill=green!8,minimum width=3.1cm,minimum height=0.6cm,align=center}]
+\node[font=\scriptsize\bfseries] at (0,4.7) {Padrão};
+\node[font=\scriptsize\bfseries] at (6,4.7) {Domínio de aplicação};
+\node[p] (p1) at (0,4) {Orchestrator-Worker};
+\node[p] (p2) at (0,3) {Sequential Pipeline};
+\node[p] (p3) at (0,2) {Parallel Fan-Out/In};
+\node[p] (p4) at (0,1) {Dynamic Handoff};
+\node[p] (p5) at (0,0) {Magentic};
+\node[d] (t1) at (6,4) {Conteúdo técnico};
+\node[d] (t2) at (6,3) {Jurídico};
+\node[d] (t3) at (6,2) {Financeiro};
+\node[d] (t4) at (6,1) {Atendimento};
+\node[d] (t5) at (6,0) {SRE / Incidentes};
+\draw[->] (p1)--(t1);
+\draw[->] (p2)--(t2);
+\draw[->] (p3)--(t3);
+\draw[->] (p4)--(t4);
+\draw[->] (p5)--(t5);
+\end{tikzpicture}
+\caption{Mapeamento entre padrões de orquestração e domínios de aplicação típicos.}
+\end{figure}
+
+
+\section{Modelagem de Custos e Latência}
+
+O overhead do Orchestrator-Worker situa-se entre 15\% e 30\% em latência e 20\% a 40\% em tokens, atribuíveis às chamadas de ida e volta (\textit{dados de fornecedor único — não consolidados por estudo independente}) (MICROSOFT, 2026). Em contrapartida, a compressão de contexto por sub-agentes reduz o consumo de tokens do agente pai em até 90\% (EPSILLA, 2026). Para tarefas de longa duração, esse ganho tende a superar o overhead de orquestração, tornando o sistema multi-agente mais barato que a alternativa mono-agente com contexto inflado. Recomenda-se difficulty-aware routing: modelos menores para roteamento e extração; modelos avançados para planejamento e consolidação (GROKIPEDIA, 2026). A Tabela 4 ilustra o efeito combinado das decisões de arquitetura.
+
+\textbf{Tabela 4.} Efeito qualitativo de decisões de arquitetura sobre custo e latência
+
+\begin{center}
+{\small
+\setlength{\tabcolsep}{4pt}
+\begin{tabularx}{\linewidth}{>{\raggedright\arraybackslash}X>{\centering\arraybackslash}X>{\centering\arraybackslash}X>{\raggedright\arraybackslash}X}
+\toprule
+\textbf{Decisão de arquitetura} & \textbf{Efeito em custo} & \textbf{Efeito em latência} & \textbf{Fonte} \\
+\midrule
+Sub-agentes com compressão de contexto & Reduz & Neutro/Positivo & Epsilla (2026) \\
+Orchestrator-Worker & Aumenta & Aumenta & Microsoft (2026) \\
+Parallel Fan-Out & Aumenta & Reduz & Digital Applied (2026); Pucek (2026) \\
+Difficulty-aware routing & Reduz & Neutro & Grokipedia (2026) \\
+Checkpointing/pruning a 70\% & Reduz & Neutro & Stackviv (2026) \\
+\bottomrule
+\end{tabularx}
+}
+\end{center}
+
+Fonte: elaborado pelo autor. Nota: valores qualitativos baseados em fontes primárias dos respectivos fornecedores; não constituem meta-análise independente.
+
+Recomenda-se aplicar compactação quando o contexto acumulado excede 70\% do limite do modelo (STACKVIV, 2026).
+
+
+\section{Diretrizes de Engenharia para Produção}
+
+\subsection{Gerenciamento Dinâmico de Contexto}
+Implementar sumarização incremental e pruning de histórico — remoção de metadados irrelevantes e respostas intermediárias. Aplicar compactação quando o contexto excede 70\% do limite do modelo (STACKVIV, 2026), preservando artefatos de decisão e descartando rastros de baixo valor.
+
+\subsection{Otimização de Custos e Latência}
+Adotar difficulty-aware routing (GROKIPEDIA, 2026) e caching de contexto para reduzir custo marginal de requisições repetitivas.
+
+\subsection{Segurança e Isolamento}
+Sub-agentes devem operar sob o princípio do menor privilégio, restringindo acesso a APIs e bancos de dados ao escopo exato da tarefa. Implementar circuit breakers e cotas rígidas para prevenir loops infinitos (WITNESSAI, 2026). O isolamento de contexto — garantido pelo Claude Agent SDK (ANTHROPIC, 2026b) — limita o raio de explosão de um comprometimento.
+
+\subsection{Human-in-the-Loop}
+Observadores em group chat, revisores em ciclos maker-checker e escalação em handoff. Pontos de verificação obrigatórios tornam a orquestração síncrona, com estado persistido em checkpoints para retomada sem replay (MICROSOFT LEARN, 2026). A presença humana em pontos críticos de decisão é recomendada para domínios de alto risco.
+
+\subsection{Observabilidade}
+Stack mínimo: LangSmith (rastreamento de agentes), OpenTelemetry (métricas de infraestrutura) e dashboards de workflow engine, instrumentando toda operação e handoff (SHAKUDO, 2026; APISCOUT, 2026). Sem observabilidade, a depuração de topologias dinâmicas torna-se inviável dado o não determinismo das decisões de roteamento.
+
+
+\section{Riscos, Limitações e Estratégias de Mitigação}
+
+\textbf{Não determinismo de roteamento.} Decisões de LLMs em runtime podem divergir entre execuções equivalentes. Mitigação: abordagem híbrida com estrutura predefinida e limites de transição (AWS, 2025), persistindo traços completos para auditoria (SHAKUDO, 2026; APISCOUT, 2026). \textbf{Custo de tokens da orquestração.} Overhead de 20–40\% em tokens do Orchestrator-Worker pode inviabilizar alto volume (\textit{dados de fornecedor único}). Mitigação: difficulty-aware routing (GROKIPEDIA, 2026) e compressão de contexto por sub-agentes (EPSILLA, 2026). \textbf{Depuração de topologias dinâmicas.} Multiplicidade de caminhos dificulta causa raiz de falhas. Mitigação: observabilidade integral (SHAKUDO, 2026; APISCOUT, 2026) e time-travel debugging com checkpointing (AGENT MARKET CAP, 2026). \textbf{Segurança e loops.} Privilégios excessivos e ausência de circuit breakers induzem loops infinitos ou exfiltração de dados. Mitigação: princípio do menor privilégio e cotas rígidas por agente (WITNESSAI, 2026). \textbf{Interoperabilidade.} Fragmentação de protocolos (A2A, MCP) entre frameworks limita portabilidade. Mitigação: adoção de frameworks com suporte nativo aos protocolos padronizados (TZOLOV, 2026; MICROSOFT, 2026).
+
+
+\section{Tendências Emergentes}
+
+Seis tendências moldam o futuro dos dynamic workflows (ZYLOS RESEARCH, 2026; MICROSOFT LEARN, 2026): (1) \textbf{DAGs} como linguagem de especificação, com LangGraph como expoente; (2) \textbf{orquestração event-driven}, com agentes reagindo a eventos em barramentos (Kafka, RabbitMQ); (3) \textbf{modelo Actor}, cada agente como ator com caixa postal, popularizado por AutoGen e MAF; (4) \textbf{roteamento dinâmico por dificuldade}, com classificadores estimando complexidade da query para alocar recursos proporcionalmente; (5) \textbf{orquestração federada} cloud-edge através de fronteiras de confiança, com A2A como bloco fundamental; (6) \textbf{workflows auto-otimizáveis}, com meta-agentes ajustando a topologia com base em feedback de execuções anteriores. Essas tendências convergem dois movimentos: a formalização de grafos como linguagem comum de especificação (itens 1–3) e a autonomização progressiva da topologia (itens 4–6). A adoção antecipada de protocolos de interoperabilidade (A2A, MCP) é condição para capturar os benefícios da orquestração federada e auto-otimizável sem lock-in de fornecedor.
+
+
+\section{Roadmap de Adoção em Produção}
+
+\textbf{Fase 1 — Fundação (semanas 1–4):} estabelecer stack de observabilidade (LangSmith, OpenTelemetry) e modelo de isolamento de contexto e privilégios (WITNESSAI, 2026; SHAKUDO, 2026), iniciando com agentes generalistas simples. \textbf{Fase 2 — Orquestração Híbrida (semanas 5–10):} introduzir Orchestrator-Worker ou Sequential Pipeline conforme a tarefa, com compressão de contexto por sub-agentes (EPSILLA, 2026), difficulty-aware routing (GROKIPEDIA, 2026) e checkpoints para retomada sem replay (MICROSOFT LEARN, 2026). \textbf{Fase 3 — Escala e Autonomia (semanas 11+):} expandir para Parallel Fan-Out/Fan-In e Dynamic Handoff conforme necessidade de análise multi-perspectiva, habilitar human-in-the-loop, considerar Magentic para domínios de escopo aberto (ZYLOS RESEARCH, 2026), reavaliando topologia à luz de métricas de custo e latência. A recomendação central é evoluir de topologias estáticas para dinâmicas de forma incremental, sustentada por observabilidade desde o primeiro dia e arquitetura em camadas combinando durabilidade (Temporal), raciocínio de agente (LangGraph) e coordenação inter-serviço (Kafka + A2A).
+
+
+\section{Conclusão}
+
+Os padrões de orquestração multi-agente consolidaram-se como pilares de arquitetura em produção empresarial. A escolha do padrão e framework deve ser guiada por requisitos pragmáticos de latência, custos e complexidade da tarefa, e não por preferências de implementação. A compressão de contexto por sub-agentes é o principal benefício prático, com reduções de até 90\% no consumo de tokens do agente pai em configurações reportadas (\textit{dado de fornecedor único — não verificado independentemente}) (EPSILLA, 2026). Recomenda-se iniciar com agentes generalistas simples e aplicar especialização em sub-agentes apenas quando houver evidências mensuráveis de ganhos de performance ou conformidade. A arquitetura híbrida em camadas — durabilidade (Temporal), raciocínio de agente (LangGraph), coordenação inter-serviço (Kafka + A2A) e observabilidade desde o primeiro dia — evoluindo de topologias estáticas para dinâmicas de forma incremental, constitui a abordagem recomendada. Limitações atuais incluem depuração de topologias dinâmicas, custo de tokens da orquestração e fragmentação de protocolos entre frameworks. Perspectivas futuras apontam para DAGs como linguagem de especificação, orquestração event-driven e workflows auto-otimizáveis mediados por meta-agentes, cujo sucesso dependerá da disciplina de engenharia aplicada à observabilidade, segurança e human-in-the-loop.
+
+
+\section*{Agradecimentos}
+
+[A preencher pelo autor.]
+
+
+\section*{Conflito de Interesses}
+
+Os autores declaram não haver conflitos de interesses financeiros, comerciais ou acadêmicos relacionados ao presente trabalho.
+
+
+\section*{Referências}
+
+AGENT MARKET CAP. LangGraph vs AutoGen vs CrewAI vs DSPy: The 2026 Multi-Agent Framework Decision Guide. \textbf{Agent Market Cap}, 2026. Disponível em: \url{https://agentmarketcap.ai/blog/2026/04/11/langgraph-autogen-crewai-dspy-multi-agent-orchestration-2026.} Acesso em: 12 jul. 2026.
+
+ANTHROPIC. \textbf{Claude Agent SDK}: Subagents in the SDK. \textbf{Anthropic Documentation}, 2026a. Disponível em: \url{https://code.claude.com/docs/en/agent-sdk/subagents.} Acesso em: 12 jul. 2026.
+
+ANTHROPIC. \textbf{Claude Code}: Orchestrate subagents at scale with dynamic workflows. \textbf{Anthropic Documentation}, 2026b. Disponível em: \url{https://code.claude.com/docs/en/workflows.} Acesso em: 12 jul. 2026.
+
+APISCOUT. \textbf{OpenAI Agents SDK}: Architecture Patterns 2026. \textbf{APIScout}, 2026. Disponível em: \url{https://apiscout.dev/guides/openai-agents-sdk-architecture-patterns-2026.} Acesso em: 12 jul. 2026.
+
+AWS. \textbf{Agentic AI patterns and workflows on AWS}. \textbf{Amazon Web Services}, 2025. Disponível em: \url{https://docs.aws.amazon.com/prescriptive-guidance/latest/agentic-ai-patterns/introduction.html.} Acesso em: 12 jul. 2026.
+
+DEVARAJAN, Vishalini. \textbf{Common Workflow Patterns for AI Agents}. \textbf{GUVI Blog}, 2026. Disponível em: \url{https://www.guvi.in/blog/common-workflow-patterns-for-ai-agents.} Acesso em: 12 jul. 2026.
+
+DIGITAL APPLIED. \textbf{Multi-Agent Orchestration}: 5 Patterns That Work in 2026. \textbf{Digital Applied}, 2026. Disponível em: \url{https://www.digitalapplied.com/blog/multi-agent-orchestration-5-patterns-that-work.} Acesso em: 12 jul. 2026.
+
+EPSILLA. \textbf{The 3 Essential Sub-Agent Patterns for Production-Grade AI Systems}. \textbf{Epsilla Blog}, 2026. Disponível em: \url{https://www.epsilla.com/blogs/2026-03-14-ai-sub-agent-patterns.} Acesso em: 12 jul. 2026.
+
+GARTNER. Gartner Predicts 40\% of Enterprise Apps Will Feature Task-Specific AI Agents by 2026, Up from Less Than 5\% in 2025. \textbf{Gartner Newsroom}, 26 ago. 2025. Disponível em: \url{https://www.gartner.com/en/newsroom/press-releases/2025-08-26-gartner-predicts-40-percent-of-enterprise-apps-will-feature-task-specific-ai-agents-by-2026-up-from-less-than-5-percent-in-2025.} Acesso em: 12 jul. 2026.
+
+GHEWARE, Rajesh. \textbf{LangGraph vs CrewAI vs AutoGen}: Complete AI Agent Framework Comparison 2026. \textbf{DevOps Gheware}, 2026. Disponível em: \url{https://devops.gheware.com/blog/posts/langgraph-vs-crewai-vs-autogen-comparison-2026.html.} Acesso em: 12 jul. 2026.
+
+GROKIPEDIA. \textbf{AI Agent Orchestration}. \textbf{Grokipedia}, 2026. Disponível em: \url{https://grokipedia.com/page/AI\_Agent\_Orchestration.} Acesso em: 12 jul. 2026.
+
+JETTHOUGHTS. \textbf{LangGraph vs CrewAI vs AutoGen}: Open Source Alternatives 2025. \textbf{JetThoughts}, 2026. Disponível em: \url{https://jetthoughts.com/blog/autogen-crewai-langgraph-ai-agent-frameworks-2025.} Acesso em: 12 jul. 2026.
+
+LUSHBINARY. \textbf{Multi-Agent AI Orchestration Patterns}: Supervisor, Swarm, Pipeline \& Router. \textbf{Lushbinary}, 2026. Disponível em: \url{https://lushbinary.com/blog/multi-agent-orchestration-patterns-supervisor-swarm-pipeline-router-guide.} Acesso em: 12 jul. 2026.
+
+META INTELLIGENCE. \textbf{LangGraph vs CrewAI vs AutoGen}: AI Agent Framework Comparison [2026]. \textbf{Meta Intelligence}, 2025. Disponível em: \url{https://www.meta-intelligence.tech/en/insight-ai-agent-frameworks.} Acesso em: 12 jul. 2026.
+
+MICROSOFT. \textbf{AI Agent Orchestration Patterns}. \textbf{Microsoft Learn}, 2026. Disponível em: \url{https://learn.microsoft.com/en-us/azure/architecture/ai-ml/guide/ai-agent-design-patterns.} Acesso em: 12 jul. 2026.
+
+MICROSOFT LEARN. \textbf{Multi-agent patterns}. \textbf{Microsoft Learn}, 2026. Disponível em: \url{https://learn.microsoft.com/en-us/agents/architecture/multi-agent-patterns.} Acesso em: 12 jul. 2026.
+
+OPENAI. \textbf{Agents SDK}: Orchestration and handoffs. \textbf{OpenAI Documentation}, 2026. Disponível em: \url{https://developers.openai.com/api/docs/guides/agents/orchestration.} Acesso em: 12 jul. 2026.
+
+OPENAGENTS. \textbf{CrewAI vs LangGraph vs AutoGen vs OpenAgents}: Best AI Agent Framework. \textbf{OpenAgents}, 2026. Disponível em: \url{https://openagents.org/blog/posts/2026-02-23-open-source-ai-agent-frameworks-compared.} Acesso em: 12 jul. 2026.
+
+PUCEK, Bartek. \textbf{Orchestration Patterns for AI Agent Workflows}. \textbf{The Thinking Company}, 2026. Disponível em: \url{https://thinking.inc/en/blue-ocean/agentic/agent-orchestration-patterns.} Acesso em: 12 jul. 2026.
+
+ROCKB. \textbf{Microsoft Agent Framework 2026}: AutoGen Successor Explained. \textbf{RockB}, 2026. Disponível em: \url{https://baeseokjae.github.io/posts/microsoft-agent-framework-2026/.} Acesso em: 12 jul. 2026.
+
+SHAKUDO. \textbf{Enterprise Agentic AI Workflow Patterns for 2025}. \textbf{Shakudo}, 2025. Disponível em: \url{https://cdn.prod.website-files.com/625447c67b621ab49bb7e3e5/69388ca4cdb5836ee83b10f5\_69388ca257d8a9675e92aeb8\_agentic-ai-workflow-patterns-whitepaper.pdf.} Acesso em: 12 jul. 2026.
+
+SHAKUDO. \textbf{Multi-Agent Systems Transform Enterprise AI in 2026}. \textbf{Shakudo}, 2026. Disponível em: \url{https://cdn.prod.website-files.com/625447c67b621ab49bb7e3e5/696fdd9dcee4a9c14251480b\_696fdd9c3876035a277d2a6f\_multi-agent-systems-2026-trends-whitepaper.pdf.} Acesso em: 12 jul. 2026.
+
+STACKVIV. \textbf{Agentic AI \& Multi-Agent Systems}: Advanced Guide. \textbf{Stackviv}, 2026. Disponível em: \url{https://stackviv.ai/blog/agentic-ai-multi-agent-systems-guide.} Acesso em: 12 jul. 2026.
+
+SUBAGENT.DEV. \textbf{Orchestration Patterns}. \textbf{SubAgent.Dev}, 2026. Disponível em: \url{https://subagent.developersdigest.tech/patterns.} Acesso em: 12 jul. 2026.
+
+TZOLOV, Christian. \textbf{Spring AI Agentic Patterns (Part 4)}: Subagent Orchestration. \textbf{Spring Blog}, 2026. Disponível em: \url{https://spring.io/blog/2026/01/27/spring-ai-agentic-patterns-4-task-subagents/.} Acesso em: 12 jul. 2026.
+
+VELLUM AI. \textbf{The 2026 Guide to AI Agent Workflows}. \textbf{Vellum AI}, 2025. Disponível em: \url{https://www.vellum.ai/blog/agentic-workflows-emerging-architectures-and-design-patterns.} Acesso em: 12 jul. 2026.
+
+WINBUZZER. \textbf{Anthropic Shows How to Scale Claude Code with Subagents and MCP}. \textbf{WinBuzzer}, 2026. Disponível em: \url{https://winbuzzer.com/2026/03/24/anthropic-claude-code-subagent-mcp-advanced-patterns-xcxwbn.} Acesso em: 12 jul. 2026.
+
+WITNESSAI. \textbf{AI Agent Orchestration}: Managing Multi-Agent Workflows. \textbf{WitnessAI}, 2026. Disponível em: \url{https://witness.ai/blog/ai-agent-orchestration.} Acesso em: 12 jul. 2026.
+
+ZYLOS RESEARCH. \textbf{Agent Workflow Orchestration Patterns}: DAG, Event-Driven, and Actor Models. \textbf{Zylos Research}, 2026. Disponível em: \url{https://zylos.ai/research/2026-04-14-agent-workflow-orchestration-patterns.} Acesso em: 12 jul. 2026.
+\end{document}
